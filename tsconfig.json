@@ -1,0 +1,22 @@
+{
+	"compilerOptions": {
+		"strict": true,
+		"noEmit": true,
+		"noImplicitAny": true,
+		"esModuleInterop": true,
+		"strictNullChecks": true,
+		"declaration": true,
+		"isolatedModules": true,
+		"outDir": "dist",
+		"target": "ESNext",
+		"module": "NodeNext",
+		"moduleResolution": "NodeNext",
+		"skipLibCheck": true,
+		"downlevelIteration": true,
+		"noUncheckedIndexedAccess": true,
+		"strictPropertyInitialization": false,
+		"resolveJsonModule": true,
+	},
+	"include": [ "src" ],
+	"exclude": [ "node_modules" ]
+}

@@ -1,0 +1,24 @@
+{
+	"name": "@alessiofrittoli/server-sent-events",
+	"version": "1.0.0",
+	"description": "Class Based implementation for Server-Sent events",
+	"keywords": [
+		"server-sent-events",
+		"streaming"
+	],
+	"main": "./dist/index.js",
+	"module": "./dist/index.mjs",
+	"types": "./dist/index.d.ts",
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "tsup"
+	},
+	"author": "alessiofrittoli",
+	"license": "MIT",
+	"devDependencies": {
+		"tsup": "^8.3.5",
+		"typescript": "^5.6.3"
+	}
+}
