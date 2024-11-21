@@ -1,6 +1,6 @@
 {
 	"name": "@alessiofrittoli/server-sent-events",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Class Based implementation for Server-Sent events",
 	"author": {
 		"name": "Alessio Frittoli",
