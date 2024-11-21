@@ -33,6 +33,7 @@ With server-sent events, it's possible for a server to send new data to a web pa
 By creating a new instance of `ServerSentEvents` class you will get access to methods required to stream data to the client.
 
 Simple return `ServerSentEvents.stream.readable` in a `Response` instance to start streaming data.\
+⚠️ Do not forget to return the proper response headers.\
 ⚠️ The streaming Response implementation depends on your back-end application.
 
 ```typescript
@@ -41,7 +42,7 @@ import ServerSentEvents from '@alessiofrittoli/server-sent-events'
 const sse = new ServerSentEvents()
 
 return (
-	new Response( sse.stream.readable )
+	new Response( sse.stream.readable, { headers: sse.headers } )
 )
 ```
 
