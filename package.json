@@ -2,10 +2,25 @@
 	"name": "@alessiofrittoli/server-sent-events",
 	"version": "1.0.0",
 	"description": "Class Based implementation for Server-Sent events",
+	"author": {
+		"name": "Alessio Frittoli",
+		"email": "info@alessiofrittoli.it",
+		"url": "https://alessiofrittoli.it"
+	},
+	"license": "MIT",
 	"keywords": [
 		"server-sent-events",
 		"streaming"
 	],
+	"homepage": "https://github.com/alessiofrittoli/server-sent-events#readme",
+	"bugs": {
+		"url": "https://github.com/alessiofrittoli/server-sent-events/issues",
+		"email": "project@hostname.com"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/alessiofrittoli/server-sent-events.git"
+	},
 	"main": "./dist/index.js",
 	"module": "./dist/index.mjs",
 	"types": "./dist/index.d.ts",
@@ -15,8 +30,6 @@
 	"scripts": {
 		"build": "tsup"
 	},
-	"author": "alessiofrittoli",
-	"license": "MIT",
 	"devDependencies": {
 		"tsup": "^8.3.5",
 		"typescript": "^5.6.3"
