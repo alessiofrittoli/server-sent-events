@@ -54,6 +54,8 @@ class ServerSentEvents implements ServerSentEventsProps
 	/** Flag whether {@link WritableStreamDefaultWriter} has been closed or not. */
 	closed: boolean
 	retry
+	/** Default headers sent to the client. */
+	headers: Headers
 
 
 	constructor( props?: ServerSentEventsProps )
@@ -63,6 +65,13 @@ class ServerSentEvents implements ServerSentEventsProps
 		this.encoder	= new TextEncoder()
 		this.closed		= false
 		this.retry		= props?.retry
+		this.headers	= new Headers( {
+			'Content-Type'		: 'text/event-stream',
+			'Connection'		: 'keep-alive',
+			'Cache-Control'		: 'no-cache, no-transform',
+			'X-Accel-Buffering'	: 'no',
+			'Content-Encoding'	: 'none',
+		} )
 
 		if ( this.retry ) {
 			this.write( this.formatRetry( this.retry ) )
