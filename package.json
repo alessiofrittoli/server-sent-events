@@ -21,7 +21,7 @@
 		"type": "git",
 		"url": "git+https://github.com/alessiofrittoli/server-sent-events.git"
 	},
-	"main": "./dist/index.js",
+	"main": "./dist/index.cjs",
 	"module": "./dist/index.mjs",
 	"types": "./dist/index.d.ts",
 	"files": [
