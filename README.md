@@ -19,6 +19,7 @@ Version 1.1.0
 		- [Reading server-sent custom events data](#reading-server-sent-custom-events-data)
 		- [Closing the EventSource](#closing-the-eventsource)
 		- [EventSource Error handling](#eventsource-error-handling)
+- [Contributing](#contributing)
 - [Security](#security)
 - [Credits](#made-with-)
 
@@ -297,6 +298,15 @@ eventSource.addEventListener( 'error', event => {
 	console.log( '"error" event', eventSource.readyState, event )
 } )
 ```
+
+---
+
+### Contributing
+
+Contributions are truly welcome!\
+Please refer to the [Contributing Doc](./CONTRIBUTING.md) for more information on how to start contributing to this project.
+
+---
 
 ### Security
 

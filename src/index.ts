@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 interface ServerSentEventsProps
 {
 	/** Defines the delay time in milliseconds after which the client attempts to reconnect to the server. */
@@ -48,7 +49,7 @@ class ServerSentEvents implements ServerSentEventsProps
 	/** The ServerSentEvents {@link TransformStream} instance. */
 	stream: TransformStream
 	/** The ServerSentEvents {@link WritableStreamDefaultWriter} instance. */
-	writer: WritableStreamDefaultWriter<any>
+	writer: WritableStreamDefaultWriter
 	/** The ServerSentEvents {@link TextEncoder} instance. */
 	encoder: TextEncoder
 	/** Flag whether {@link WritableStreamDefaultWriter} has been closed or not. */
