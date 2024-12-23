@@ -16,7 +16,10 @@
 		"noUncheckedIndexedAccess": true,
 		"strictPropertyInitialization": false,
 		"resolveJsonModule": true,
+		"paths": {
+			"@/*": [ "./src/*" ]
+		}
 	},
-	"include": [ "src" ],
+	"include": [ "src", "__tests__" ],
 	"exclude": [ "node_modules" ]
 }
