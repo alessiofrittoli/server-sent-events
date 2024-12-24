@@ -47,9 +47,9 @@ interface ServerSentEventsProps
 class ServerSentEvents implements ServerSentEventsProps
 {
 	/** The ServerSentEvents {@link TransformStream} instance. */
-	stream: TransformStream
+	stream: TransformStream<Uint8Array, Uint8Array>
 	/** The ServerSentEvents {@link WritableStreamDefaultWriter} instance. */
-	writer: WritableStreamDefaultWriter
+	writer: WritableStreamDefaultWriter<Uint8Array>
 	/** The ServerSentEvents {@link TextEncoder} instance. */
 	encoder: TextEncoder
 	/** Flag whether {@link WritableStreamDefaultWriter} has been closed or not. */
@@ -58,10 +58,30 @@ class ServerSentEvents implements ServerSentEventsProps
 	/** Default headers sent to the client. */
 	headers: Headers
 
+	/**
+	 * Indicates whether the connection is in the process of closing.
+	 * This flag is internally used to prevent multiple close operations from being initiated.
+	 */
+	private isClosing: boolean = false
 
+
+	/**
+	 * Constructs a new instance of the ServerSentEvents class.
+	 * 
+	 * @param props - Optional properties to configure the ServerSentEvents instance.
+	 * 
+	 * @property stream - A TransformStream used for handling the event stream.
+	 * @property writer - A WritableStreamDefaultWriter for writing to the stream.
+	 * @property encoder - A TextEncoder for encoding text to Uint8Array.
+	 * @property closed - A boolean indicating whether the stream is closed.
+	 * @property retry - An optional retry interval for the event stream.
+	 * @property headers - A Headers object containing the headers for the event stream.
+	 * 
+	 * If the `retry` property is provided, it writes the formatted retry interval to the stream.
+	 */
 	constructor( props?: ServerSentEventsProps )
 	{
-		this.stream		= new TransformStream()
+		this.stream		= new TransformStream<Uint8Array>()
 		this.writer		= this.stream.writable.getWriter()
 		this.encoder	= new TextEncoder()
 		this.closed		= false
@@ -101,32 +121,35 @@ class ServerSentEvents implements ServerSentEventsProps
 	 */
 	async push( data: any, event?: string )
 	{
-		if ( this.closed ) return
-
+		if ( this.closed ) return this
 		if ( event ) {
-			await (
+			return (
 				this.write(
 					this.formatEvent( event )
 					+ this.formatData( data )
 				)
 			)
-			await this.writer.ready
-			return this
 		}
-
-		await this.write( this.formatData( data ) )
-		await this.writer.ready
-
-		return this
+		return this.write( this.formatData( data ) )
 	}
 
 
-	private write( data: string )
+	/**
+	 * Writes the given data to the writer after encoding it.
+	 *
+	 * @param data - The string data to be written.
+	 * @returns A promise that resolves when the data has been written.
+	 */
+	private async write( data: string )
 	{
 		return (
-			this.writer.write(
-				this.encoder.encode( data )
-			)
+			this.writer.ready
+				.then( () => (
+					this.writer.write(
+						this.encoder.encode( data )
+					)
+				) )
+				.then( () => this )
 		)
 	}
 
@@ -141,66 +164,108 @@ class ServerSentEvents implements ServerSentEventsProps
 	 * 
 	 * @param error The error data to write.
 	 */
-	async error( error: any )
+	async error( error: Error )
 	{
-		try {
-			await this.push( error, 'error' )
+		try {			
+			await this.push( error.message, 'error' )
 			await this.close()
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		} catch ( error ) {
-			console.error( 'Error writing or closing stream:', error )
 			await this.writer.close()
+			this.writer.releaseLock()
 			this.closed = true
 		}
+		return this
 	}
 
 
 	/**
-	 * Abort the {@link ServerSentEvents.writer}.
-	 * 
-	 * @param reason The Abort reason message.
+	 * Aborts the {@link ServerSentEvents.writer}.
+	 *
+	 * @param reason - An optional string providing the reason for the abort.
+	 * @returns A new Promise with the current `ServerSentEvents` instance for chaining purposes.
 	 */
 	async abort( reason?: string )
 	{
 		this.closed = true
 		await this.writer.abort( new DOMException( reason || 'Streming writer aborted.', 'AbortError' ) )
+		this.writer.releaseLock()
+		return this
 	}
 
 
 	/**
-	 * Write `end` event in the stream and close the {@link ServerSentEvents.writer}.
+	 * Closes the writer if it is not already closed or in the process of closing.
+	 * Sets the `isClosing` flag to true to prevent multiple close operations.
+	 * Pushes an 'end' event to signal the end of the stream.
+	 * Closes the writer and releases the lock.
+	 * Resets the `isClosing` flag to false after the operation.
 	 * 
 	 * Make sure to add a 'end' type event listener on your {@link EventSource.addEventListener} instance on the client-side to close the {@link EventSource} by calling {@link EventSource.close()}.
 	 * ```ts
 	 * EventSource.addEventListener<"end">(type: "end", listener: (this: EventSource, ev: Event) => any, options?: boolean | AddEventListenerOptions): void
 	 * ```
+	 * @returns A new Promise with the current `ServerSentEvents` instance for chaining purposes.
 	 */
 	async close()
 	{
-		if ( this.closed ) return
-		await this.push( '', 'end' )
-		await this.writer.close()
-		this.closed = true
+		if ( this.closed || this.isClosing ) return this
+		this.isClosing = true
+		try {
+			await this.push( '', 'end' )
+			await this.writer.close()
+			this.closed = true
+			this.writer.releaseLock()
+		} finally {
+			this.isClosing = false
+		}
+		return this
 	}
 
 
-	private formatDirective( directive: string, value: any )
+	/**
+	 * Formats a directive and its value as a string.
+	 *
+	 * @param directive - The directive to be formatted.
+	 * @param value - The value associated with the directive.
+	 * @returns A formatted string in the form of "directive: value\n".
+	 */
+	private formatDirective( directive: string, value: string | number | boolean )
 	{
 		return `${ directive }: ${ value }\n`
 	}
 
 
+	/**
+	 * Formats an event string into a server-sent event directive.
+	 *
+	 * @param event - The event string to be formatted.
+	 * @returns The formatted event directive string.
+	 */
 	private formatEvent( event: string )
 	{
 		return this.formatDirective( 'event', event )
 	}
 
 
+	/**
+	 * Formats the retry directive with the specified time in milliseconds.
+	 *
+	 * @param ms - The time in milliseconds to wait before retrying the connection.
+	 * @returns The formatted retry directive string.
+	 */
 	private formatRetry( ms: number )
 	{
 		return this.formatDirective( 'retry', ms )
 	}
 
 
+	/**
+	 * Formats the given data as a server-sent event data directive.
+	 *
+	 * @param data - The data to be formatted.
+	 * @returns A string representing the formatted data directive.
+	 */
 	private formatData( data: any )
 	{
 		return this.formatDirective( 'data', JSON.stringify( data ) ) + '\n'
