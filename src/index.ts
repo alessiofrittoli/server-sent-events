@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-interface ServerSentEventsProps
+export interface ServerSentEventsProps
 {
 	/** Defines the delay time in milliseconds after which the client attempts to reconnect to the server. */
 	retry?: number
@@ -44,7 +44,7 @@ interface ServerSentEventsProps
  * eventSource.addEventListener( 'error', event => { eventSource.close() ... } )
  * ```
  */
-class ServerSentEvents implements ServerSentEventsProps
+export class ServerSentEvents implements ServerSentEventsProps
 {
 	/** The ServerSentEvents {@link TransformStream} instance. */
 	stream: TransformStream<Uint8Array, Uint8Array>
@@ -271,6 +271,3 @@ class ServerSentEvents implements ServerSentEventsProps
 		return this.formatDirective( 'data', JSON.stringify( data ) ) + '\n'
 	}
 }
-
-
-export default ServerSentEvents
