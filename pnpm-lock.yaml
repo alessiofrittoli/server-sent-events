@@ -8,6 +8,9 @@ importers:
 
   .:
     devDependencies:
+      '@alessiofrittoli/node-scripts':
+        specifier: ^2.0.1
+        version: 2.0.1
       '@alessiofrittoli/stream-reader':
         specifier: ^1.0.0
         version: 1.0.0
@@ -61,6 +64,9 @@ importers:
         version: 8.18.2(eslint@9.17.0)(typescript@5.7.2)
 
 packages:
+
+  '@alessiofrittoli/node-scripts@2.0.1':
+    resolution: {integrity: sha512-fDU+8Jjso9NrLtsyDZ7IHutkjto9S7P1yqMFp7fW5nGD0IMI4DaOIySXnLzBOSl8Pod03IW2TzFeo1ZOdBSy4g==}
 
   '@alessiofrittoli/stream-reader@1.0.0':
     resolution: {integrity: sha512-2OtO6Y0FSnlFplO5o4phsATgWkPZdcAD6CzHJBRtViGXBxeb9UWP6TfJptnAA3w2XELRPWXc4NSO/fSO2HBC6g==}
@@ -2417,6 +2423,8 @@ packages:
     engines: {node: '>=10'}
 
 snapshots:
+
+  '@alessiofrittoli/node-scripts@2.0.1': {}
 
   '@alessiofrittoli/stream-reader@1.0.0': {}
 

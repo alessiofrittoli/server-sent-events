@@ -30,6 +30,7 @@
 	"scripts": {
 		"build": "pnpm lint && pnpm test:ci && tsup",
 		"build:watch": "tsup --watch",
+		"release": "node scripts/publish.js --verbose --npm",
 		"lint": "eslint",
 		"test": "jest --watchAll --verbose",
 		"test:ci": "jest --ci --verbose",
@@ -41,6 +42,7 @@
 		"test:server-events": "pnpm test server-events.test.ts"
 	},
 	"devDependencies": {
+		"@alessiofrittoli/node-scripts": "^2.0.1",
 		"@alessiofrittoli/stream-reader": "^1.0.0",
 		"@eslint/js": "^9.17.0",
 		"@jest/globals": "^29.7.0",
