@@ -38,7 +38,7 @@ Simple return `ServerSentEvents.stream.readable` in a `Response` instance to sta
 ⚠️ The streaming Response implementation depends on your back-end application.
 
 ```typescript
-import ServerSentEvents from '@alessiofrittoli/server-sent-events'
+import { ServerSentEvents } from '@alessiofrittoli/server-sent-events'
 
 const sse = new ServerSentEvents()
 
@@ -56,7 +56,7 @@ The data is then read by the client by listening to the default `message` event 
 For this example we are going to execute a function which simulates an asynchronous long task.
 
 ```typescript
-import ServerSentEvents from '@alessiofrittoli/server-sent-events'
+import { ServerSentEvents } from '@alessiofrittoli/server-sent-events'
 
 export const sleep = ( ms: number ) => (
 	new Promise<void>( resolve => setTimeout( resolve, ms ) )
