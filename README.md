@@ -1,6 +1,6 @@
 # Server-Sent Events ✅
 
-Version 1.1.0
+Version 1.2.0
 
 ## Class Based implementation for [Server-Sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events)
 
