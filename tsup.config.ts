@@ -5,20 +5,9 @@ export default defineConfig( {
 	format		: [ 'cjs', 'esm' ],
 	dts			: true,
 	splitting	: false,
-	shims		: true,
+	shims		: false,
 	skipNodeModulesBundle: true,
 	clean		: true,
 	treeshake	: true,
 	minify		: true,
-	outExtension( ctx ) {
-		if ( ctx.format === 'esm' ) {
-			return {
-				dts	: '.d.ts',
-				js	: '.mjs',
-			}
-		}
-		return {
-			js: '.cjs'
-		}
-	},
 } )

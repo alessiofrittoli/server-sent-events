@@ -21,27 +21,27 @@
 		"type": "git",
 		"url": "git+https://github.com/alessiofrittoli/server-sent-events.git"
 	},
-	"main": "./dist/index.cjs",
+	"main": "./dist/index.js",
 	"module": "./dist/index.mjs",
 	"types": "./dist/index.d.ts",
 	"files": [
 		"dist"
 	],
 	"scripts": {
-		"build": "pnpm lint && pnpm test:ci && pnpm test:ci:jsdom && tsup",
+		"build": "pnpm lint && pnpm test:ci && tsup",
 		"build:watch": "tsup --watch",
 		"lint": "eslint",
 		"test": "jest --watchAll --verbose",
-		"test:jsdom": "JSDOM=true pnpm test",
 		"test:ci": "jest --ci --verbose",
-		"test:ci:jsdom": "JSDOM=true pnpm test:ci",
 		"test:serve-coverage": "http-server ./coverage/lcov-report --gzip true -p 0 -o --silent",
 		"test:coverage": "concurrently --prefix none --kill-others \"pnpm jest --watchAll --verbose --coverage\" \"pnpm test:serve-coverage\"",
 		"test:coverage:jsdom": "JSDOM=true pnpm test:coverage",
 		"test:jest": "pnpm test jest.test.ts",
-		"test:jest:jsdom": "JSDOM=true pnpm test:jest"
+		"test:jest:jsdom": "JSDOM=true pnpm test:jest",
+		"test:server-events": "pnpm test server-events.test.ts"
 	},
 	"devDependencies": {
+		"@alessiofrittoli/stream-reader": "^1.0.0",
 		"@eslint/js": "^9.17.0",
 		"@jest/globals": "^29.7.0",
 		"@types/jest": "^29.5.14",
@@ -57,6 +57,6 @@
 		"ts-node": "^10.9.2",
 		"tsup": "^8.3.5",
 		"typescript": "^5.7.2",
-		"typescript-eslint": "^8.18.1"
+		"typescript-eslint": "^8.18.2"
 	}
 }
