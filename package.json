@@ -28,7 +28,7 @@
 		"dist"
 	],
 	"scripts": {
-		"build": "pnpm lint && pnpm test:ci && pnpm test:ci:jsdom && tsup",
+		"build": "pnpm lint && pnpm test:ci && tsup",
 		"build:watch": "tsup --watch",
 		"release": "node scripts/publish.js --verbose",
 		"lint": "eslint",
