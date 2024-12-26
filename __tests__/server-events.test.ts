@@ -25,11 +25,8 @@ describe( 'ServerSentEvents', () => {
 		sse.push( { message: 'somedata' } )
 		sse.close()
 
-		const reader = new StreamReader( sse.stream.readable )
-		const chunks = (
-			await reader.read()
-		).map( chunk => Buffer.from( chunk ).toString() )
-
+		const reader = new StreamReader<Uint8Array, string>( sse.stream.readable )
+		const chunks = await reader.read( chunk => Buffer.from( chunk ).toString() )
 		expect( chunks.includes( 'retry: 1000\n' ) ).toBe( true )
 	} )
 
@@ -50,10 +47,8 @@ describe( 'ServerSentEvents.push()', () => {
 		sse.push( data, 'customEvent' )
 		sse.close()
 
-		const reader = new StreamReader( sse.stream.readable )
-		const chunks = (
-			await reader.read()
-		).map( chunk => Buffer.from( chunk ).toString() )
+		const reader = new StreamReader<Uint8Array, string>( sse.stream.readable )
+		const chunks = await reader.read( chunk => Buffer.from( chunk ).toString() )
 
 		expect( chunks.includes( `event: customEvent\ndata: ${ JSON.stringify( data ) }\n\n` ) ).toBe( true )
 	} )
@@ -74,11 +69,9 @@ describe( 'ServerSentEvents.close()', () => {
 		sse.push( { message: 'somedata' } )
 			.then( () => sse.close() )
 
-		const reader = new StreamReader( sse.stream.readable )
-		const chunks = (
-			await reader.read()
-		).map( chunk => Buffer.from( chunk ).toString() )
-				
+		const reader = new StreamReader<Uint8Array, string>( sse.stream.readable )
+		const chunks = await reader.read( chunk => Buffer.from( chunk ).toString() )
+					
 		expect( chunks.includes( 'event: end\ndata: ""\n\n' ) ).toBe( true )
 	} )
 
@@ -94,10 +87,8 @@ describe( 'ServerSentEvents.close()', () => {
 				sse.close()
 			} )
 
-		const reader = new StreamReader( sse.stream.readable )
-		const chunks = (
-			await reader.read()
-		).map( chunk => Buffer.from( chunk ).toString() )		
+		const reader = new StreamReader<Uint8Array, string>( sse.stream.readable )
+		const chunks = await reader.read( chunk => Buffer.from( chunk ).toString() )
 				
 		expect(
 			chunks.filter( chunk => chunk.includes( 'event: end\ndata: ""\n\n' ) ).length
@@ -123,10 +114,8 @@ describe( 'ServerSentEvents.error()', () => {
 			.then( () => sse.close() )
 			.catch( error => sse.error( error ) )
 
-		const reader = new StreamReader( sse.stream.readable )
-		const chunks = (
-			await reader.read()
-		).map( chunk => Buffer.from( chunk ).toString() )
+		const reader = new StreamReader<Uint8Array, string>( sse.stream.readable )
+		const chunks = await reader.read( chunk => Buffer.from( chunk ).toString() )	
 
 		expect( chunks.includes( 'event: error\ndata: "Test error"\n\n' ) ).toBe( true )
 	} )
@@ -139,10 +128,8 @@ describe( 'ServerSentEvents.error()', () => {
 			.catch( error => sse.error( error ) )
 
 
-		const reader = new StreamReader( sse.stream.readable )
-		const chunks = (
-			await reader.read()
-		).map( chunk => Buffer.from( chunk ).toString() )
+		const reader = new StreamReader<Uint8Array, string>( sse.stream.readable )
+		const chunks = await reader.read( chunk => Buffer.from( chunk ).toString() )
 		
 		expect( chunks.includes( 'event: end\ndata: ""\n\n' ) ).toBe( true )
 	} )
@@ -159,11 +146,9 @@ describe( 'ServerSentEvents.error()', () => {
 			} )
 
 
-		const reader = new StreamReader( sse.stream.readable )
-		const chunks = (
-			await reader.read()
-		).map( chunk => Buffer.from( chunk ).toString() )
-
+		const reader = new StreamReader<Uint8Array, string>( sse.stream.readable )
+		const chunks = await reader.read( chunk => Buffer.from( chunk ).toString() )
+	
 		expect(
 			chunks.filter( chunk => chunk.includes( 'event: error\ndata: "Test error"\n\n' ) ).length
 		).toBe( 1 )
@@ -180,11 +165,9 @@ describe( 'ServerSentEvents.error()', () => {
 				sse.push( { message: 'somedata after error' } )
 			} )
 
-		const reader = new StreamReader( sse.stream.readable )
-		const chunks = (
-			await reader.read()
-		).map( chunk => Buffer.from( chunk ).toString() )
-
+		const reader = new StreamReader<Uint8Array, string>( sse.stream.readable )
+		const chunks = await reader.read( chunk => Buffer.from( chunk ).toString() )
+	
 		expect( chunks.includes( 'data: {"message":"somedata after error"}\n\n' ) ).toBe( false )
 	} )
 
