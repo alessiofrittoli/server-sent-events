@@ -28,15 +28,20 @@
 		"dist"
 	],
 	"scripts": {
-		"build": "pnpm lint && pnpm test:ci && tsup",
+		"build": "pnpm lint && pnpm test:ci && pnpm test:ci:jsdom && tsup",
 		"build:watch": "tsup --watch",
-		"release": "node scripts/publish.js --verbose --npm",
+		"release": "node scripts/publish.js --verbose",
 		"lint": "eslint",
 		"test": "jest --watchAll --verbose",
+		"test:jsdom": "JSDOM=true pnpm test",
 		"test:ci": "jest --ci --verbose",
+		"test:ci:jsdom": "JSDOM=true pnpm test:ci",
+		"test:coverage": "pnpm test --coverage",
+		"test:ci:coverage": "pnpm test:ci --coverage",
 		"test:serve-coverage": "http-server ./coverage/lcov-report --gzip true -p 0 -o --silent",
-		"test:coverage": "concurrently --prefix none --kill-others \"pnpm jest --watchAll --verbose --coverage\" \"pnpm test:serve-coverage\"",
+		"test:coverage:serve": "concurrently --prefix none --kill-others \"jest --watchAll --verbose --coverage\" \"pnpm test:serve-coverage\"",
 		"test:coverage:jsdom": "JSDOM=true pnpm test:coverage",
+		"test:coverage:jsdom:serve": "JSDOM=true pnpm test:coverage:serve",
 		"test:jest": "pnpm test jest.test.ts",
 		"test:jest:jsdom": "JSDOM=true pnpm test:jest",
 		"test:server-events": "pnpm test server-events.test.ts"

@@ -12,8 +12,8 @@ importers:
         specifier: ^2.0.1
         version: 2.0.1
       '@alessiofrittoli/stream-reader':
-        specifier: ^1.0.0
-        version: 1.0.0
+        specifier: ^1.1.0
+        version: 1.1.0
       '@eslint/js':
         specifier: ^9.17.0
         version: 9.17.0
@@ -68,8 +68,8 @@ packages:
   '@alessiofrittoli/node-scripts@2.0.1':
     resolution: {integrity: sha512-fDU+8Jjso9NrLtsyDZ7IHutkjto9S7P1yqMFp7fW5nGD0IMI4DaOIySXnLzBOSl8Pod03IW2TzFeo1ZOdBSy4g==}
 
-  '@alessiofrittoli/stream-reader@1.0.0':
-    resolution: {integrity: sha512-2OtO6Y0FSnlFplO5o4phsATgWkPZdcAD6CzHJBRtViGXBxeb9UWP6TfJptnAA3w2XELRPWXc4NSO/fSO2HBC6g==}
+  '@alessiofrittoli/stream-reader@1.1.0':
+    resolution: {integrity: sha512-wTVNCAwVnBe/kUvmq+Dx1SH0cLyfhaymgMSyXDhX06uHbzkrMqPg2f9SEvIDCozN2nDzSMbaE4RPUzULFhOcoA==}
 
   '@ampproject/remapping@2.3.0':
     resolution: {integrity: sha512-30iZtAPgz+LTIYoeivqYo853f02jBYSd5uGnGpkFV0M3xOt9aN73erkgYAmZU43x4VfqcnLxW9Kpg3R5LC4YYw==}
@@ -2426,7 +2426,7 @@ snapshots:
 
   '@alessiofrittoli/node-scripts@2.0.1': {}
 
-  '@alessiofrittoli/stream-reader@1.0.0': {}
+  '@alessiofrittoli/stream-reader@1.1.0': {}
 
   '@ampproject/remapping@2.3.0':
     dependencies:
