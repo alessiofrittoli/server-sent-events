@@ -43,7 +43,7 @@
 	},
 	"devDependencies": {
 		"@alessiofrittoli/node-scripts": "^2.0.1",
-		"@alessiofrittoli/stream-reader": "^1.0.0",
+		"@alessiofrittoli/stream-reader": "^1.1.0",
 		"@eslint/js": "^9.17.0",
 		"@jest/globals": "^29.7.0",
 		"@types/jest": "^29.5.14",
