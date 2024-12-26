@@ -1,6 +1,6 @@
 # Server-Sent Events ✅
 
-Version 1.2.0
+Version 1.3.0
 
 [![Coverage Status](https://coveralls.io/repos/github/alessiofrittoli/server-sent-events/badge.svg)](https://coveralls.io/github/alessiofrittoli/server-sent-events) [![Dependencies](https://img.shields.io/librariesio/release/npm/%40alessiofrittoli%2Fserver-sent-events)](https://libraries.io/npm/%40alessiofrittoli%2Fserver-sent-events)
 
