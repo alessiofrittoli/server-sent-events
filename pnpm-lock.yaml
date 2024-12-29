@@ -9,8 +9,8 @@ importers:
   .:
     devDependencies:
       '@alessiofrittoli/node-scripts':
-        specifier: ^2.0.1
-        version: 2.0.1
+        specifier: ^2.2.1
+        version: 2.2.1
       '@alessiofrittoli/stream-reader':
         specifier: ^1.1.0
         version: 1.1.0
@@ -27,8 +27,8 @@ importers:
         specifier: ^22.10.2
         version: 22.10.2
       concurrently:
-        specifier: ^9.1.0
-        version: 9.1.0
+        specifier: ^9.1.1
+        version: 9.1.1
       dotenv:
         specifier: ^16.4.7
         version: 16.4.7
@@ -65,8 +65,8 @@ importers:
 
 packages:
 
-  '@alessiofrittoli/node-scripts@2.0.1':
-    resolution: {integrity: sha512-fDU+8Jjso9NrLtsyDZ7IHutkjto9S7P1yqMFp7fW5nGD0IMI4DaOIySXnLzBOSl8Pod03IW2TzFeo1ZOdBSy4g==}
+  '@alessiofrittoli/node-scripts@2.2.1':
+    resolution: {integrity: sha512-VP9pUyrPhudlv/1UOxb1BfisKOSAAl/0H8beM5Udn3ddMHPVbrP4ul1rLqDbHWsFzePmpOiOsvOpEAsj2YPnWA==}
 
   '@alessiofrittoli/stream-reader@1.1.0':
     resolution: {integrity: sha512-wTVNCAwVnBe/kUvmq+Dx1SH0cLyfhaymgMSyXDhX06uHbzkrMqPg2f9SEvIDCozN2nDzSMbaE4RPUzULFhOcoA==}
@@ -992,8 +992,8 @@ packages:
   concat-map@0.0.1:
     resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
 
-  concurrently@9.1.0:
-    resolution: {integrity: sha512-VxkzwMAn4LP7WyMnJNbHN5mKV9L2IbyDjpzemKr99sXNR3GqRNMMHdm7prV1ws9wg7ETj6WUkNOigZVsptwbgg==}
+  concurrently@9.1.1:
+    resolution: {integrity: sha512-6VX8lrBIycgZKTwBsWS+bLrmkGRkDmvtGsYylRN9b93CygN6CbK46HmnQ3rdSOR8HRjdahDrxb5MqD9cEFOg5Q==}
     engines: {node: '>=18'}
     hasBin: true
 
@@ -2424,7 +2424,7 @@ packages:
 
 snapshots:
 
-  '@alessiofrittoli/node-scripts@2.0.1': {}
+  '@alessiofrittoli/node-scripts@2.2.1': {}
 
   '@alessiofrittoli/stream-reader@1.1.0': {}
 
@@ -3413,7 +3413,7 @@ snapshots:
 
   concat-map@0.0.1: {}
 
-  concurrently@9.1.0:
+  concurrently@9.1.1:
     dependencies:
       chalk: 4.1.2
       lodash: 4.17.21
