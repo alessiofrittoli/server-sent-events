@@ -15,18 +15,18 @@
 ### Table of Contents
 
 - [Getting started](#getting-started)
-	- [Server-Side](#server-side)
-		- [Streaming events data](#streaming-events-data)
-		- [Writing into the stream](#writing-into-the-stream)
-		- [Custom events](#custom-events)
-		- [Closing the stream](#closing-the-stream)
-		- [Error handling](#error-handling)
-		- [Abort handling](#abort-handling)
-	- [Client-Side](#client-side)
-		- [Reading server-sent events data](#reading-server-sent-events-data)
-		- [Reading server-sent custom events data](#reading-server-sent-custom-events-data)
-		- [Closing the EventSource](#closing-the-eventsource)
-		- [EventSource Error handling](#eventsource-error-handling)
+  - [Server-Side](#server-side)
+    - [Streaming events data](#streaming-events-data)
+    - [Writing into the stream](#writing-into-the-stream)
+    - [Custom events](#custom-events)
+    - [Closing the stream](#closing-the-stream)
+    - [Error handling](#error-handling)
+    - [Abort handling](#abort-handling)
+  - [Client-Side](#client-side)
+    - [Reading server-sent events data](#reading-server-sent-events-data)
+    - [Reading server-sent custom events data](#reading-server-sent-custom-events-data)
+    - [Closing the EventSource](#closing-the-eventsource)
+    - [EventSource Error handling](#eventsource-error-handling)
 - [Contributing](#contributing)
 - [Security](#security)
 - [Credits](#made-with-)
@@ -51,7 +51,7 @@ import { ServerSentEvents } from '@alessiofrittoli/server-sent-events'
 const sse = new ServerSentEvents()
 
 return (
-	new Response( sse.stream.readable, { headers: sse.headers } )
+  new Response( sse.stream.readable, { headers: sse.headers } )
 )
 ```
 
@@ -67,31 +67,31 @@ For this example we are going to execute a function which simulates an asynchron
 import { ServerSentEvents } from '@alessiofrittoli/server-sent-events'
 
 export const sleep = ( ms: number ) => (
-	new Promise<void>( resolve => setTimeout( resolve, ms ) )
+  new Promise<void>( resolve => setTimeout( resolve, ms ) )
 )
 
 const longRunningTask = async ( stream: ServerSentEvents ) => {
-	await stream.push( { message: 'Started' } )
-	await sleep( 1000 )
-	await stream.push( { message: 'Done 15%' } )
-	await sleep( 1000 )
-	await stream.push( { message: 'Done 35%' } )
-	await sleep( 1000 )
-	await stream.push( { message: 'Done 75%' } )
-	await sleep( 1000 )
-	await stream.push( { message: 'Final data' } )
+  await stream.push( { message: 'Started' } )
+  await sleep( 1000 )
+  await stream.push( { message: 'Done 15%' } )
+  await sleep( 1000 )
+  await stream.push( { message: 'Done 35%' } )
+  await sleep( 1000 )
+  await stream.push( { message: 'Done 75%' } )
+  await sleep( 1000 )
+  await stream.push( { message: 'Final data' } )
 }
 
 
 const businessLogic = () => {
 
-	const sse = new ServerSentEvents()
+  const sse = new ServerSentEvents()
 
-	longRunningTask( sse )
+  longRunningTask( sse )
 
-	return (
-		new Response( sse.stream.readable )
-	)
+  return (
+      new Response( sse.stream.readable )
+  )
 
 }
 ```
@@ -131,17 +131,17 @@ Since our previous function returns a void Promise, we can await it and then cal
 
 const businessLogic = () => {
 
-	const sse = new ServerSentEvents()
+  const sse = new ServerSentEvents()
 
-	longRunningTask( sse )
-		.then( () => {
-			console.log( 'Streaming done.' )
-			sse.close()
-		} )
+  longRunningTask( sse )
+      .then( () => {
+          console.log( 'Streaming done.' )
+          sse.close()
+      } )
 
-	return (
-		new Response( sse.stream.readable )
-	)
+  return (
+      new Response( sse.stream.readable )
+  )
 
 }
 ```
@@ -168,18 +168,18 @@ Good to know - Since the `ServerSentEvents.error()` will push an event with the 
 
 const businessLogic = () => {
 
-	...
+  ...
 
-	longRunningTask( sse )
-		.then( () => {
-			...
-		} )
-		.catch( error => {
-			console.error( 'Failed', error )
-			sse.error( { message: error.message } )
-		} )
+  longRunningTask( sse )
+      .then( () => {
+          ...
+      } )
+      .catch( error => {
+          console.error( 'Failed', error )
+          sse.error( { message: error.message } )
+      } )
 
-	...
+  ...
 
 }
 ```
@@ -199,37 +199,37 @@ In our interval we check if `ServerSentEvents.closed` has been set to `true` bef
 ...
 
 const timer = async ( stream: ServerSentEvents ) => {
-	await stream.push( { message: new Date().toISOString() } )
-	await new Promise<void>( resolve => {
-		const interval = setInterval( () => {
-			if ( stream.closed ) {
-				clearInterval( interval )
-				return resolve()
-			}
-			stream.push( { message: new Date().toISOString() } )
-		}, 1000 )
-	} )
+  await stream.push( { message: new Date().toISOString() } )
+  await new Promise<void>( resolve => {
+    const interval = setInterval( () => {
+      if ( stream.closed ) {
+        clearInterval( interval )
+        return resolve()
+      }
+      stream.push( { message: new Date().toISOString() } )
+    }, 1000 )
+  } )
 }
 
 const businessLogic = request => {
 
-	...
+  ...
 
-	request.signal.addEventListener( 'abort', event => {
-		sse.abort( 'Request has been aborted from user.' )
-	} )
+  request.signal.addEventListener( 'abort', event => {
+    sse.abort( 'Request has been aborted from user.' )
+  } )
 
-	timer( sse )
-		.then( () => {
-			...
-		} )
-		.catch( error => {
-			console.error( 'Failed', error )
-			if ( error.name === 'AbortError' ) return
-			sse.error( { message: error.message } )
-		} )
+  timer( sse )
+    .then( () => {
+        ...
+    } )
+    .catch( error => {
+        console.error( 'Failed', error )
+        if ( error.name === 'AbortError' ) return
+        sse.error( { message: error.message } )
+    } )
 
-	...
+  ...
 
 }
 ```
@@ -242,39 +242,39 @@ If you do not check if `ServerSentEvents.closed` is `true` before pushing new da
 ...
 
 const timer = async ( stream: ServerSentEvents ) => {
-	await stream.push( { message: new Date().toISOString() } )
-	await new Promise<void>( resolve => {
-		const interval = setInterval( () => {
-			stream.push( { message: new Date().toISOString() } )
-				.catch( error => {
-					clearInterval( interval )
-					return reject( error )
-				} )
-		}, 1000 )
-	} )
+  await stream.push( { message: new Date().toISOString() } )
+  await new Promise<void>( resolve => {
+    const interval = setInterval( () => {
+      stream.push( { message: new Date().toISOString() } )
+        .catch( error => {
+          clearInterval( interval )
+          return reject( error )
+          } )
+    }, 1000 )
+  } )
 }
 
 const businessLogic = request => {
 
-	...
+  ...
 
-	request.signal.addEventListener( 'abort', event => {
-		sse.abort( 'Request has been aborted from user.' )
-	} )
+  request.signal.addEventListener( 'abort', event => {
+    sse.abort( 'Request has been aborted from user.' )
+  } )
 
-	timer( sse )
-		.then( () => {
-			...
-		} )
-		.catch( error => {
-			console.error( 'Failed', error )
-			if ( error.name === 'AbortError' ) {
-				return console.log( 'Streaming stopped:', error.message )
-			}
-			sse.error( { message: error.message } )
-		} )
+  timer( sse )
+      .then( () => {
+        ...
+      } )
+      .catch( error => {
+        console.error( 'Failed', error )
+        if ( error.name === 'AbortError' ) {
+          return console.log( 'Streaming stopped:', error.message )
+        }
+        sse.error( { message: error.message } )
+      } )
 
-	...
+  ...
 
 }
 ```
@@ -294,12 +294,12 @@ Once the connection is opened, incoming messages from the server are delivered t
 const eventSource = new EventSource( new URL( ... ) )
 
 eventSource.addEventListener( 'open', event => {
-	console.log( 'Connection opened', event )
+  console.log( 'Connection opened', event )
 } )
 
 eventSource.addEventListener( 'message', event => {
-	const data = JSON.parse( event.data )
-	console.log( '"message" event received data', data )
+  const data = JSON.parse( event.data )
+  console.log( '"message" event received data', data )
 } )
 ```
 
@@ -311,8 +311,8 @@ To listen for incoming messages from the server sent over a custom event, we jus
 ...
 
 eventSource.addEventListener( 'customEvent', event => {
-	const data = JSON.parse( event.data )
-	console.log( '"customEvent" event received data', data )
+  const data = JSON.parse( event.data )
+  console.log( '"customEvent" event received data', data )
 } )
 ```
 
@@ -326,8 +326,8 @@ We can call the [EventSource.close()](https://developer.mozilla.org/en-US/docs/W
 const cancelRequestButton = document.querySelector( '#cancel' )
 
 cancelRequestButton.addEventListener( 'click', e vent=> {
-	eventSource.close()
-	console.log( 'User aborted the request.', eventSource.readyState )
+  eventSource.close()
+  console.log( 'User aborted the request.', eventSource.readyState )
 } )
 ```
 
@@ -335,8 +335,8 @@ cancelRequestButton.addEventListener( 'click', e vent=> {
 ...
 
 eventSource.addEventListener( 'end', event => {
-	eventSource.close()
-	console.log( '"end" event received', eventSource.readyState, event )
+  eventSource.close()
+  console.log( '"end" event received', eventSource.readyState, event )
 } )
 ```
 
@@ -347,8 +347,8 @@ The server may use this event too to return handled errors occured on the server
 
 ```typescript
 eventSource.addEventListener( 'error', event => {
-	eventSource.close()
-	console.log( '"error" event', eventSource.readyState, event )
+  eventSource.close()
+  console.log( '"error" event', eventSource.readyState, event )
 } )
 ```
 
@@ -368,30 +368,30 @@ If you believe you have found a security vulnerability, we encourage you to **_r
 ### Made with ☕
 
 <table style='display:flex;gap:20px;'>
-	<tbody>
-		<tr>
-			<td>
-				<img src='https://avatars.githubusercontent.com/u/35973186' style='width:60px;border-radius:50%;object-fit:contain;'>
-			</td>
-			<td>
-				<table style='display:flex;gap:2px;flex-direction:column;'>
-					<tbody>
-						<tr>
-							<td>
-								<a href='https://github.com/alessiofrittoli' target='_blank' rel='noopener'>Alessio Frittoli</a>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<small>
-									<a href='https://alessiofrittoli.it' target='_blank' rel='noopener'>https://alessiofrittoli.it</a> |
-									<a href='mailto:info@alessiofrittoli.it' target='_blank' rel='noopener'>info@alessiofrittoli.it</a>
-								</small>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</td>
-		</tr>
-	</tbody>
+  <tbody>
+    <tr>
+      <td>
+        <img alt="avatar" src='https://avatars.githubusercontent.com/u/35973186' style='width:60px;border-radius:50%;object-fit:contain;'>
+      </td>
+      <td>
+        <table style='display:flex;gap:2px;flex-direction:column;'>
+          <tbody>
+            <tr>
+              <td>
+                  <a href='https://github.com/alessiofrittoli' target='_blank' rel='noopener'>Alessio Frittoli</a>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <small>
+                  <a href='https://alessiofrittoli.it' target='_blank' rel='noopener'>https://alessiofrittoli.it</a> |
+                  <a href='mailto:info@alessiofrittoli.it' target='_blank' rel='noopener'>info@alessiofrittoli.it</a>
+                </small>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+  </tbody>
 </table>
