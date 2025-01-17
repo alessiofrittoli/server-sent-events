@@ -70,7 +70,7 @@ export const sleep = ( ms: number ) => (
 	new Promise<void>( resolve => setTimeout( resolve, ms ) )
 )
 
-const longRunning = async ( stream: ServerSentEvents ) => {
+const longRunningTask = async ( stream: ServerSentEvents ) => {
 	await stream.push( { message: 'Started' } )
 	await sleep( 1000 )
 	await stream.push( { message: 'Done 15%' } )
@@ -87,7 +87,7 @@ const businessLogic = () => {
 
 	const sse = new ServerSentEvents()
 
-	longRunning( sse )
+	longRunningTask( sse )
 
 	return (
 		new Response( sse.stream.readable )
@@ -133,7 +133,7 @@ const businessLogic = () => {
 
 	const sse = new ServerSentEvents()
 
-	longRunning( sse )
+	longRunningTask( sse )
 		.then( () => {
 			console.log( 'Streaming done.' )
 			sse.close()
@@ -158,7 +158,7 @@ const sse = new ServerSentEvents( { retry: 5000 } )
 
 ##### Error handling
 
-If an error occures in our `longRunning` example function we can use the `ServerSentEvents.error()` method to push a custom `error` event to the stream.
+If an error occures in our `longRunningTask` example function we can use the `ServerSentEvents.error()` method to push a custom `error` event to the stream.
 The client should listen the default `error` event on the `EventSource` to handle errors client side.
 
 Good to know - Since the `ServerSentEvents.error()` will push an event with the name `error`, the client could use a single listener to listen default and custom errors (See **_[EventSource Error handling](#eventsource-error-handling)_** section to learn more about error handling on client).
@@ -170,7 +170,7 @@ const businessLogic = () => {
 
 	...
 
-	longRunning( sse )
+	longRunningTask( sse )
 		.then( () => {
 			...
 		} )
@@ -226,6 +226,51 @@ const businessLogic = request => {
 		.catch( error => {
 			console.error( 'Failed', error )
 			if ( error.name === 'AbortError' ) return
+			sse.error( { message: error.message } )
+		} )
+
+	...
+
+}
+```
+
+---
+
+If you do not check if `ServerSentEvents.closed` is `true` before pushing new data, the `ServerSentEvents.push()` method will throw a `DOMException` with the given `AbortError` reason.
+
+```typescript
+...
+
+const timer = async ( stream: ServerSentEvents ) => {
+	await stream.push( { message: new Date().toISOString() } )
+	await new Promise<void>( resolve => {
+		const interval = setInterval( () => {
+			stream.push( { message: new Date().toISOString() } )
+				.catch( error => {
+					clearInterval( interval )
+					return reject( error )
+				} )
+		}, 1000 )
+	} )
+}
+
+const businessLogic = request => {
+
+	...
+
+	request.signal.addEventListener( 'abort', event => {
+		sse.abort( 'Request has been aborted from user.' )
+	} )
+
+	timer( sse )
+		.then( () => {
+			...
+		} )
+		.catch( error => {
+			console.error( 'Failed', error )
+			if ( error.name === 'AbortError' ) {
+				return console.log( 'Streaming stopped:', error.message )
+			}
 			sse.error( { message: error.message } )
 		} )
 

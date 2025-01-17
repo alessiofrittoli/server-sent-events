@@ -163,7 +163,7 @@ export class ServerSentEvents implements ServerSentEventsProps
 	 * 
 	 * @param error The error data to write.
 	 */
-	async error( error: Error )
+	async error( error: any )
 	{
 		if ( this.closed ) return this
 
