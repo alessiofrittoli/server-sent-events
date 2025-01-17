@@ -109,15 +109,42 @@ describe( 'ServerSentEvents.error()', () => {
 
 
 	it( 'pushes "error" event when an error occurs', async () => {
-
 		streamData( sse, true )
 			.then( () => sse.close() )
 			.catch( error => sse.error( error ) )
 
 		const reader = new StreamReader<Uint8Array, string>( sse.stream.readable )
-		const chunks = await reader.read( chunk => Buffer.from( chunk ).toString() )	
+		const chunks = await reader.read( chunk => Buffer.from( chunk ).toString() )
 
 		expect( chunks.includes( 'event: error\ndata: "Test error"\n\n' ) ).toBe( true )
+	} )
+
+
+	it( 'pushes "error" event with original data if serializable', async () => {
+		class CustomError extends Error
+		{
+			constructor( message: string, options?: ErrorOptions )
+			{
+				super( message, options )
+			}
+
+			toJSON()
+			{
+				return { message: this.message, cause: this.cause }
+			}
+		}
+
+		streamData( sse, true )
+			.then( () => sse.close() )
+			.catch( () => sse.error( new CustomError( 'Custom Error', { cause: 'ERR:UNKNOWN' } ) ) )
+
+		const reader = new StreamReader<Uint8Array, string>( sse.stream.readable )
+		const chunks = await reader.read( chunk => Buffer.from( chunk ).toString() )
+
+		expect(
+			chunks.includes( 'event: error\ndata: {"message":"Custom Error","cause":"ERR:UNKNOWN"}\n\n' )
+		).toBe( true )
+
 	} )
 
 
@@ -156,19 +183,16 @@ describe( 'ServerSentEvents.error()', () => {
 	} )
 
 
-	it( 'doesn\'t push new data after an error occurs', async () => {
+	it( 'throws a TypeError when trying to push new data after an error occured', async () => {
 
 		streamData( sse, true )
 			.then( () => sse.close() )
 			.catch( async error => {
 				await sse.error( error )
-				sse.push( { message: 'somedata after error' } )
+				expect( () => sse.push( { message: 'somedata after error' } ) )
+					.rejects.toThrow( new TypeError( 'Invalid state: Writer has been released' ) )
 			} )
 
-		const reader = new StreamReader<Uint8Array, string>( sse.stream.readable )
-		const chunks = await reader.read( chunk => Buffer.from( chunk ).toString() )
-	
-		expect( chunks.includes( 'data: {"message":"somedata after error"}\n\n' ) ).toBe( false )
 	} )
 
 
@@ -198,13 +222,13 @@ describe( 'ServerSentEvents.abort()', () => {
 		sse = new ServerSentEvents()
 	} )
 
-	it( 'abort should set closed to true', async () => {
+	it( 'set `ServerSentEvents.closed` to `true`', async () => {
 		await sse.abort()
 		expect( sse.closed ).toBe( true )
 	} )
 
 
-	it( 'abort should call writer.abort with default reason', async () => {
+	it( 'calls `ServerSentEvents.writer.abort()` with a default reason', async () => {
 		const abortSpy = jest.spyOn( sse.writer, 'abort' )
 		await sse.abort()
 		expect( abortSpy )
@@ -214,7 +238,7 @@ describe( 'ServerSentEvents.abort()', () => {
 	} )
 
 
-	it( 'abort should call writer.abort with provided reason', async () => {
+	it( 'calls `ServerSentEvents.writer.abort()` with a custom reason', async () => {
 		const abortSpy	= jest.spyOn( sse.writer, 'abort' )
 		const reason	= 'Custom abort reason'
 		await sse.abort( reason )
@@ -226,9 +250,20 @@ describe( 'ServerSentEvents.abort()', () => {
 	} )
 
 	
-	it( 'abort should release writer lock', async () => {
-		const releaseLockSpy = jest.spyOn( sse.writer, 'releaseLock' )
-		await sse.abort()
-		expect( releaseLockSpy ).toHaveBeenCalled()
+	it( 'doesn\'t release the `ServerSentEvents.writer` lock so `AbortError` pops out when trying to write new data', async () => {
+		const sse = new ServerSentEvents()
+		const reader = new StreamReader<Uint8Array, string>( sse.stream.readable )
+
+		streamData( sse )
+			.then( async () => {
+				await sse.abort( 'The user aborted the request.' )
+				expect( () => sse.push( { message: 'some data after abort' } ) )
+					.rejects.toThrow( new DOMException( 'The user aborted the request.', 'AbortError' ) )
+			} )
+
+		expect( () => reader.read() )
+			.rejects.toThrow( new DOMException( 'The user aborted the request.', 'AbortError' ) )
+		
 	} )
+
 } )
