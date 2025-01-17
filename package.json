@@ -32,9 +32,9 @@
 		"build:watch": "tsup --watch",
 		"lint": "eslint",
 		"release": "node scripts/publish.js --verbose --npm",
-		"test": "pnpm test:watch",
+		"test": "jest",
 		"test:watch": "jest --watchAll --verbose",
-		"test:jsdom": "JSDOM=true pnpm test",
+		"test:jsdom": "JSDOM=true pnpm test:watch",
 		"test:ci": "jest --ci --verbose",
 		"test:ci:jsdom": "JSDOM=true pnpm test:ci",
 		"test:coverage": "pnpm test:watch --coverage",
@@ -43,9 +43,9 @@
 		"test:coverage:serve": "concurrently --prefix none --kill-others \"pnpm test:coverage\" \"pnpm test:serve-coverage\"",
 		"test:coverage:jsdom": "JSDOM=true pnpm test:coverage",
 		"test:coverage:jsdom:serve": "JSDOM=true pnpm test:coverage:serve",
-		"test:jest": "pnpm test jest.test.ts",
-		"test:jest:jsdom": "JSDOM=true pnpm test:jest",
-		"test:server-events": "pnpm test server-events.test.ts"
+		"test:jest": "test:watch jest.test.ts",
+		"test:jest:jsdom": "JSDOM=true test:watch:jest",
+		"test:server-events": "test:watch server-events.test.ts"
 	},
 	"devDependencies": {
 		"@alessiofrittoli/node-scripts": "^2.2.1",
