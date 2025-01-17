@@ -166,8 +166,14 @@ export class ServerSentEvents implements ServerSentEventsProps
 	 */
 	async error( error: Error )
 	{
+		if ( this.closed ) return this
+
 		try {			
+			if ( JSON.stringify( error ) === '{}' ) {
 			await this.push( error.message, 'error' )
+			} else {
+				await this.push( error, 'error' )
+			}
 			await this.close()
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		} catch ( error ) {
