@@ -1,8 +1,14 @@
 # Server-Sent Events ✅
 
-Version 1.3.1
+[![NPM Latest Version][version-badge]][npm-url] [![Coverage Status][coverage-badge]][coverage-url] [![NPM Monthly Downloads][downloads-badge]][npm-url] [![Dependencies][deps-badge]][deps-url]
 
-[![Coverage Status](https://coveralls.io/repos/github/alessiofrittoli/server-sent-events/badge.svg)](https://coveralls.io/github/alessiofrittoli/server-sent-events) [![Dependencies](https://img.shields.io/librariesio/release/npm/%40alessiofrittoli%2Fserver-sent-events)](https://libraries.io/npm/%40alessiofrittoli%2Fserver-sent-events)
+[version-badge]: https://img.shields.io/npm/v/%40alessiofrittoli%2Fserver-sent-events
+[npm-url]: https://npmjs.org/package/%40alessiofrittoli%2Fserver-sent-events
+[coverage-badge]: https://coveralls.io/repos/github/alessiofrittoli/server-sent-events/badge.svg
+[coverage-url]: https://coveralls.io/github/alessiofrittoli/server-sent-events
+[downloads-badge]: https://img.shields.io/npm/dm/%40alessiofrittoli%2Fserver-sent-events.svg
+[deps-badge]: https://img.shields.io/librariesio/release/npm/%40alessiofrittoli%2Fserver-sent-events
+[deps-url]: https://libraries.io/npm/%40alessiofrittoli%2Fserver-sent-events
 
 ## Class Based implementation for [Server-Sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events)
 
