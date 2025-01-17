@@ -119,9 +119,8 @@ export class ServerSentEvents implements ServerSentEventsProps
 	 * @param	event	( Optional ) A custom event name.
 	 * @returns	A new Promise with the `ServerSentEvents` instance for chaining purposes.
 	 */
-	async push( data: any, event?: string )
+	push( data: any, event?: string )
 	{
-		if ( this.closed ) return this
 		if ( event ) {
 			return (
 				this.write(
@@ -168,9 +167,9 @@ export class ServerSentEvents implements ServerSentEventsProps
 	{
 		if ( this.closed ) return this
 
-		try {			
+		try {
 			if ( JSON.stringify( error ) === '{}' ) {
-			await this.push( error.message, 'error' )
+				await this.push( error.message, 'error' )
 			} else {
 				await this.push( error, 'error' )
 			}
@@ -188,14 +187,13 @@ export class ServerSentEvents implements ServerSentEventsProps
 	/**
 	 * Aborts the {@link ServerSentEvents.writer}.
 	 *
-	 * @param reason - An optional string providing the reason for the abort.
+	 * @param reason An optional string providing the reason for the abort.
 	 * @returns A new Promise with the current `ServerSentEvents` instance for chaining purposes.
 	 */
 	async abort( reason?: string )
 	{
 		this.closed = true
 		await this.writer.abort( new DOMException( reason || 'Streming writer aborted.', 'AbortError' ) )
-		this.writer.releaseLock()
 		return this
 	}
 
