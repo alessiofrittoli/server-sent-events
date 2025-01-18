@@ -57,7 +57,7 @@ return (
 
 ##### Writing into the stream
 
-By using the method `ServerSentEvents.push()` you can write and push any serializeable data to the client.\
+By using the method `ServerSentEvents.write()` you can write and push any serializeable data to the client.\
 This method will serialize your data before sending it to the client by using `JSON.stringify()`.\
 The data is then read by the client by listening to the default `message` event on the `EventSource` instance (See **_[Reading server-sent events data](#reading-server-sent-events-data)_** for more information about reading received data).
 
@@ -71,15 +71,15 @@ export const sleep = ( ms: number ) => (
 )
 
 const longRunningTask = async ( stream: ServerSentEvents ) => {
-  await stream.push( { message: 'Started' } )
+  await stream.write( { message: 'Started' } )
   await sleep( 1000 )
-  await stream.push( { message: 'Done 15%' } )
+  await stream.write( { message: 'Done 15%' } )
   await sleep( 1000 )
-  await stream.push( { message: 'Done 35%' } )
+  await stream.write( { message: 'Done 35%' } )
   await sleep( 1000 )
-  await stream.push( { message: 'Done 75%' } )
+  await stream.write( { message: 'Done 75%' } )
   await sleep( 1000 )
-  await stream.push( { message: 'Final data' } )
+  await stream.write( { message: 'Final data' } )
 }
 
 
@@ -101,12 +101,12 @@ const businessLogic = () => {
 By default our data is implicitly sent over the default `message` event.
 
 However, you may need to push new data into the same connection stream under a custom event.\
-We can then specify its name as 2nd argument of the `ServerSentEvents.push()` method like so:
+We can then specify its name as 2nd argument of the `ServerSentEvents.write()` method like so:
 
 ```typescript
 ...
 
-sse.push( { message: 'My data' }, 'customEvent' )
+sse.write( { message: 'My data' }, 'customEvent' )
 
 ...
 ```
@@ -199,14 +199,14 @@ In our interval we check if `ServerSentEvents.closed` has been set to `true` bef
 ...
 
 const timer = async ( stream: ServerSentEvents ) => {
-  await stream.push( { message: new Date().toISOString() } )
+  await stream.write( { message: new Date().toISOString() } )
   await new Promise<void>( resolve => {
     const interval = setInterval( () => {
       if ( stream.closed ) {
         clearInterval( interval )
         return resolve()
       }
-      stream.push( { message: new Date().toISOString() } )
+      stream.write( { message: new Date().toISOString() } )
     }, 1000 )
   } )
 }
@@ -236,16 +236,16 @@ const businessLogic = request => {
 
 ---
 
-If you do not check if `ServerSentEvents.closed` is `true` before pushing new data, the `ServerSentEvents.push()` method will throw a `DOMException` with the given `AbortError` reason.
+If you do not check if `ServerSentEvents.closed` is `true` before pushing new data, the `ServerSentEvents.write()` method will throw a `DOMException` with the given `AbortError` reason.
 
 ```typescript
 ...
 
 const timer = async ( stream: ServerSentEvents ) => {
-  await stream.push( { message: new Date().toISOString() } )
+  await stream.write( { message: new Date().toISOString() } )
   await new Promise<void>( resolve => {
     const interval = setInterval( () => {
-      stream.push( { message: new Date().toISOString() } )
+      stream.write( { message: new Date().toISOString() } )
         .catch( error => {
           clearInterval( interval )
           return reject( error )

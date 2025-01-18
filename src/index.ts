@@ -1,3 +1,5 @@
+import { Stream } from '@alessiofrittoli/stream-writer'
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export interface ServerSentEventsProps
 {
@@ -8,6 +10,8 @@ export interface ServerSentEventsProps
 
 /**
  * Server-Sent Events base class.
+ * 
+ * This class extends the [`Stream`](https://npmjs.com/package/@alessiofrittoli/stream-writer) interface with additional convenience methods.
  * 
  * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events)
  * 
@@ -44,58 +48,51 @@ export interface ServerSentEventsProps
  * eventSource.addEventListener( 'error', event => { eventSource.close() ... } )
  * ```
  */
-export class ServerSentEvents implements ServerSentEventsProps
+export class ServerSentEvents extends Stream<string, Uint8Array> implements ServerSentEventsProps
 {
-	/** The ServerSentEvents {@link TransformStream} instance. */
-	stream: TransformStream<Uint8Array, Uint8Array>
-	/** The ServerSentEvents {@link WritableStreamDefaultWriter} instance. */
-	writer: WritableStreamDefaultWriter<Uint8Array>
 	/** The ServerSentEvents {@link TextEncoder} instance. */
 	encoder: TextEncoder
-	/** Flag whether {@link WritableStreamDefaultWriter} has been closed or not. */
-	closed: boolean
 	retry
-	/** Default headers sent to the client. */
-	headers: Headers
 
 	/**
 	 * Indicates whether the connection is in the process of closing.
 	 * This flag is internally used to prevent multiple close operations from being initiated.
 	 */
-	private isClosing: boolean = false
+	private closing: boolean = false
 
 
 	/**
 	 * Constructs a new instance of the ServerSentEvents class.
 	 * 
-	 * @param props - Optional properties to configure the ServerSentEvents instance.
+	 * @param props Optional properties to configure the ServerSentEvents instance.
 	 * 
-	 * @property stream - A TransformStream used for handling the event stream.
-	 * @property writer - A WritableStreamDefaultWriter for writing to the stream.
-	 * @property encoder - A TextEncoder for encoding text to Uint8Array.
-	 * @property closed - A boolean indicating whether the stream is closed.
-	 * @property retry - An optional retry interval for the event stream.
-	 * @property headers - A Headers object containing the headers for the event stream.
+     * @property writable	— The `WritableStream<I>`.
+     * @property readable	— The `ReadableStream<O>`.
+     * @property writer		— The `WritableStreamDefaultWriter<I>` for writing to the stream.
+     * @property closed		— A boolean indicating whether the stream is closed.
+     * @property headers	— Common headers to return in a Server Response.
+	 * @property retry		— An optional retry interval for the event stream.
 	 * 
 	 * If the `retry` property is provided, it writes the formatted retry interval to the stream.
 	 */
 	constructor( props?: ServerSentEventsProps )
 	{
-		this.stream		= new TransformStream<Uint8Array>()
-		this.writer		= this.stream.writable.getWriter()
-		this.encoder	= new TextEncoder()
-		this.closed		= false
-		this.retry		= props?.retry
-		this.headers	= new Headers( {
-			'Content-Type'		: 'text/event-stream',
-			'Connection'		: 'keep-alive',
-			'Cache-Control'		: 'no-cache, no-transform',
-			'X-Accel-Buffering'	: 'no',
-			'Content-Encoding'	: 'none',
+		const encoder = new TextEncoder()
+
+		super( {
+			transform( chunk, controller ) {
+				controller.enqueue( encoder.encode( chunk ) )
+			}
 		} )
 
+		this.encoder	= encoder
+		this.closed		= false
+		this.retry		= props?.retry
+
+		this.headers.set( 'Content-Type', 'text/event-stream' )
+
 		if ( this.retry ) {
-			this.write( this.formatRetry( this.retry ) )
+			super.write( this.formatRetry( this.retry ) )
 		}
 	}
 
@@ -119,37 +116,17 @@ export class ServerSentEvents implements ServerSentEventsProps
 	 * @param	event	( Optional ) A custom event name.
 	 * @returns	A new Promise with the `ServerSentEvents` instance for chaining purposes.
 	 */
-	push( data: any, event?: string )
+	write( data: any, event?: string )
 	{
 		if ( event ) {
 			return (
-				this.write(
+				super.write(
 					this.formatEvent( event )
 					+ this.formatData( data )
 				)
 			)
 		}
-		return this.write( this.formatData( data ) )
-	}
-
-
-	/**
-	 * Writes the given data to the writer after encoding it.
-	 *
-	 * @param data - The string data to be written.
-	 * @returns A promise that resolves when the data has been written.
-	 */
-	private async write( data: string )
-	{
-		return (
-			this.writer.ready
-				.then( () => (
-					this.writer.write(
-						this.encoder.encode( data )
-					)
-				) )
-				.then( () => this )
-		)
+		return super.write( this.formatData( data ) )
 	}
 
 
@@ -169,32 +146,15 @@ export class ServerSentEvents implements ServerSentEventsProps
 
 		try {
 			if ( JSON.stringify( error ) === '{}' ) {
-				await this.push( error.message, 'error' )
+				await this.write( error.message, 'error' )
 			} else {
-				await this.push( error, 'error' )
+				await this.write( error, 'error' )
 			}
-			await this.close()
+			return await this.close()
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		} catch ( error ) {
-			await this.writer.close()
-			this.writer.releaseLock()
-			this.closed = true
+			return this.close()
 		}
-		return this
-	}
-
-
-	/**
-	 * Aborts the {@link ServerSentEvents.writer}.
-	 *
-	 * @param reason An optional string providing the reason for the abort.
-	 * @returns A new Promise with the current `ServerSentEvents` instance for chaining purposes.
-	 */
-	async abort( reason?: string )
-	{
-		this.closed = true
-		await this.writer.abort( new DOMException( reason || 'Streming writer aborted.', 'AbortError' ) )
-		return this
 	}
 
 
@@ -213,17 +173,15 @@ export class ServerSentEvents implements ServerSentEventsProps
 	 */
 	async close()
 	{
-		if ( this.closed || this.isClosing ) return this
-		this.isClosing = true
+		if ( this.closed || this.closing ) return this
+		this.closing = true
 		try {
-			await this.push( '', 'end' )
-			await this.writer.close()
-			this.closed = true
-			this.writer.releaseLock()
+			await this.write( '', 'end' )
 		} finally {
-			this.isClosing = false
+			this.closing = false
+			// eslint-disable-next-line no-unsafe-finally
+			return super.close()
 		}
-		return this
 	}
 
 
