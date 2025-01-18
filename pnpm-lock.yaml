@@ -7,6 +7,10 @@ settings:
 importers:
 
   .:
+    dependencies:
+      '@alessiofrittoli/stream-writer':
+        specifier: ^1.0.0
+        version: 1.0.0
     devDependencies:
       '@alessiofrittoli/node-scripts':
         specifier: ^2.2.1
@@ -73,6 +77,9 @@ packages:
 
   '@alessiofrittoli/stream-reader@1.3.0':
     resolution: {integrity: sha512-gUFP0vKFJOoByXc7hJ+UJwRWJacPd99bg5RbWSiVGdtirKJYkqy7BaYGh5RWV2GbQZ0sriO1NciVJ4pxKkS79g==}
+
+  '@alessiofrittoli/stream-writer@1.0.0':
+    resolution: {integrity: sha512-hrn41w6OSXecpBeWkwiieRTJK+d3XM9B+gDEaWSASNApdPWtm6HpRwwG/9knR0b+mP+VIvYQQOsLF2tIXaunAQ==}
 
   '@ampproject/remapping@2.3.0':
     resolution: {integrity: sha512-30iZtAPgz+LTIYoeivqYo853f02jBYSd5uGnGpkFV0M3xOt9aN73erkgYAmZU43x4VfqcnLxW9Kpg3R5LC4YYw==}
@@ -2434,6 +2441,8 @@ snapshots:
   '@alessiofrittoli/stream-reader@1.3.0':
     dependencies:
       '@alessiofrittoli/event-emitter': 0.1.1
+
+  '@alessiofrittoli/stream-writer@1.0.0': {}
 
   '@ampproject/remapping@2.3.0':
     dependencies:

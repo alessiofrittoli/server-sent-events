@@ -66,5 +66,8 @@
 		"tsup": "^8.3.5",
 		"typescript": "^5.7.3",
 		"typescript-eslint": "^8.20.0"
+	},
+	"dependencies": {
+		"@alessiofrittoli/stream-writer": "^1.0.0"
 	}
 }

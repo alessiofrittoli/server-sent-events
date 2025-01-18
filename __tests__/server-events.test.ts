@@ -4,10 +4,10 @@ import { StreamReader } from '@alessiofrittoli/stream-reader'
 const sleep = ( ms: number ): Promise<void> => new Promise( resolve => setTimeout( resolve, ms ) )
 
 const streamData = async ( sse: ServerSentEvents, error?: boolean ) => {
-	await sse.push( { message: 'somedata' } )
+	await sse.write( { message: 'somedata' } )
 	await sleep( 50 )
 	if ( error ) throw new Error( 'Test error' )
-	await sse.push( { message: 'somedata 2' } )
+	await sse.write( { message: 'somedata 2' } )
 }
 
 describe( 'ServerSentEvents', () => {
@@ -22,18 +22,19 @@ describe( 'ServerSentEvents', () => {
 		expect( sse.retry ).toBe( 1000 )
 		expect( sse.headers.get( 'Content-Type' ) ).toBe( 'text/event-stream' )
 
-		sse.push( { message: 'somedata' } )
+		sse.write( { message: 'somedata' } )
 		sse.close()
 
-		const reader = new StreamReader<Uint8Array, string>( sse.stream.readable )
+		const reader = new StreamReader<Uint8Array, string>( sse.readable )
 		const chunks = await reader.read( chunk => Buffer.from( chunk ).toString() )
+		
 		expect( chunks.includes( 'retry: 1000\n' ) ).toBe( true )
 	} )
 
 } )
 
 
-describe( 'ServerSentEvents.push()', () => {
+describe( 'ServerSentEvents.write()', () => {
 	let sse: ServerSentEvents
 
 	beforeEach( () => {
@@ -41,13 +42,13 @@ describe( 'ServerSentEvents.push()', () => {
 	} )
 
 
-	it( 'pushes data with custom event', async () => {
+	it( 'writes data with custom event', async () => {
 		const data = { message: 'somedata' }
 
-		sse.push( data, 'customEvent' )
+		sse.write( data, 'customEvent' )
 		sse.close()
 
-		const reader = new StreamReader<Uint8Array, string>( sse.stream.readable )
+		const reader = new StreamReader<Uint8Array, string>( sse.readable )
 		const chunks = await reader.read( chunk => Buffer.from( chunk ).toString() )
 
 		expect( chunks.includes( `event: customEvent\ndata: ${ JSON.stringify( data ) }\n\n` ) ).toBe( true )
@@ -66,10 +67,10 @@ describe( 'ServerSentEvents.close()', () => {
 
 	it( 'pushes "end" event and closes the writer', async () => {
 		
-		sse.push( { message: 'somedata' } )
+		sse.write( { message: 'somedata' } )
 			.then( () => sse.close() )
 
-		const reader = new StreamReader<Uint8Array, string>( sse.stream.readable )
+		const reader = new StreamReader<Uint8Array, string>( sse.readable )
 		const chunks = await reader.read( chunk => Buffer.from( chunk ).toString() )
 					
 		expect( chunks.includes( 'event: end\ndata: ""\n\n' ) ).toBe( true )
@@ -80,14 +81,14 @@ describe( 'ServerSentEvents.close()', () => {
 
 		const closeMock = jest.spyOn( sse.writer, 'close' )
 		
-		sse.push( { message: 'somedata' } )
+		sse.write( { message: 'somedata' } )
 			.then( () => {
 				sse.close()
 				sse.close()
 				sse.close()
 			} )
 
-		const reader = new StreamReader<Uint8Array, string>( sse.stream.readable )
+		const reader = new StreamReader<Uint8Array, string>( sse.readable )
 		const chunks = await reader.read( chunk => Buffer.from( chunk ).toString() )
 				
 		expect(
@@ -113,7 +114,7 @@ describe( 'ServerSentEvents.error()', () => {
 			.then( () => sse.close() )
 			.catch( error => sse.error( error ) )
 
-		const reader = new StreamReader<Uint8Array, string>( sse.stream.readable )
+		const reader = new StreamReader<Uint8Array, string>( sse.readable )
 		const chunks = await reader.read( chunk => Buffer.from( chunk ).toString() )
 
 		expect( chunks.includes( 'event: error\ndata: "Test error"\n\n' ) ).toBe( true )
@@ -138,7 +139,7 @@ describe( 'ServerSentEvents.error()', () => {
 			.then( () => sse.close() )
 			.catch( () => sse.error( new CustomError( 'Custom Error', { cause: 'ERR:UNKNOWN' } ) ) )
 
-		const reader = new StreamReader<Uint8Array, string>( sse.stream.readable )
+		const reader = new StreamReader<Uint8Array, string>( sse.readable )
 		const chunks = await reader.read( chunk => Buffer.from( chunk ).toString() )
 
 		expect(
@@ -155,7 +156,7 @@ describe( 'ServerSentEvents.error()', () => {
 			.catch( error => sse.error( error ) )
 
 
-		const reader = new StreamReader<Uint8Array, string>( sse.stream.readable )
+		const reader = new StreamReader<Uint8Array, string>( sse.readable )
 		const chunks = await reader.read( chunk => Buffer.from( chunk ).toString() )
 		
 		expect( chunks.includes( 'event: end\ndata: ""\n\n' ) ).toBe( true )
@@ -173,7 +174,7 @@ describe( 'ServerSentEvents.error()', () => {
 			} )
 
 
-		const reader = new StreamReader<Uint8Array, string>( sse.stream.readable )
+		const reader = new StreamReader<Uint8Array, string>( sse.readable )
 		const chunks = await reader.read( chunk => Buffer.from( chunk ).toString() )
 	
 		expect(
@@ -189,7 +190,7 @@ describe( 'ServerSentEvents.error()', () => {
 			.then( () => sse.close() )
 			.catch( async error => {
 				await sse.error( error )
-				expect( () => sse.push( { message: 'somedata after error' } ) )
+				expect( () => sse.write( { message: 'somedata after error' } ) )
 					.rejects.toThrow( new TypeError( 'Invalid state: Writer has been released' ) )
 			} )
 
@@ -199,14 +200,14 @@ describe( 'ServerSentEvents.error()', () => {
 	it( 'closes the stream if an error occurs during the push of "error" event', async () => {
 		const sse = new ServerSentEvents()
 		const error = new Error( 'Test error' )
-		const writeMock = jest.spyOn( sse, 'push' )
+		const writeMock = jest.spyOn( sse, 'write' )
 		const closeMock = jest.spyOn( sse.writer, 'close' )
 
 		writeMock.mockRejectedValueOnce( error )
 
 		sse.error( error )
 
-		await new StreamReader( sse.stream.readable ).read()
+		await new StreamReader( sse.readable ).read()
 
 		expect( writeMock ).toHaveBeenCalledWith( 'Test error', 'error' )
 		expect( closeMock ).toHaveBeenCalledTimes( 1 )
@@ -233,7 +234,7 @@ describe( 'ServerSentEvents.abort()', () => {
 		await sse.abort()
 		expect( abortSpy )
 			.toHaveBeenCalledWith(
-				expect.objectContaining( { message: 'Streming writer aborted.', name: 'AbortError' } )
+				expect.objectContaining( { message: 'Stream writer aborted.', name: 'AbortError' } )
 			)
 	} )
 
@@ -252,12 +253,12 @@ describe( 'ServerSentEvents.abort()', () => {
 	
 	it( 'doesn\'t release the `ServerSentEvents.writer` lock so `AbortError` pops out when trying to write new data', async () => {
 		const sse = new ServerSentEvents()
-		const reader = new StreamReader<Uint8Array, string>( sse.stream.readable )
+		const reader = new StreamReader<Uint8Array, string>( sse.readable )
 
 		streamData( sse )
 			.then( async () => {
 				await sse.abort( 'The user aborted the request.' )
-				expect( () => sse.push( { message: 'some data after abort' } ) )
+				expect( () => sse.write( { message: 'some data after abort' } ) )
 					.rejects.toThrow( new DOMException( 'The user aborted the request.', 'AbortError' ) )
 			} )
 
