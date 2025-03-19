@@ -66,8 +66,8 @@
 		"test:server-events": "test:watch server-events.test.ts"
 	},
 	"devDependencies": {
-		"@alessiofrittoli/node-scripts": "^2.3.0",
-		"@alessiofrittoli/stream-reader": "^2.2.0",
+		"@alessiofrittoli/node-scripts": "^2.3.1",
+		"@alessiofrittoli/stream-reader": "^2.2.1",
 		"@eslint/js": "^9.22.0",
 		"@jest/globals": "^29.7.0",
 		"@types/jest": "^29.5.14",
@@ -86,7 +86,7 @@
 		"typescript-eslint": "^8.26.1"
 	},
 	"dependencies": {
-		"@alessiofrittoli/stream-writer": "^1.1.0"
+		"@alessiofrittoli/stream-writer": "^1.1.1"
 	},
 	"pnpm": {
 		"onlyBuiltDependencies": [
