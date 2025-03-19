@@ -1,6 +1,6 @@
 # Server-Sent Events ✅
 
-[![NPM Latest Version][version-badge]][npm-url] [![Coverage Status][coverage-badge]][coverage-url] [![NPM Monthly Downloads][downloads-badge]][npm-url] [![Dependencies][deps-badge]][deps-url]
+[![NPM Latest Version][version-badge]][npm-url] [![Coverage Status][coverage-badge]][coverage-url] [![Socket Status][socket-badge]][socket-url] [![NPM Monthly Downloads][downloads-badge]][npm-url] [![Dependencies][deps-badge]][deps-url]
 
 [![GitHub Sponsor][sponsor-badge]][sponsor-url]
 
@@ -8,6 +8,8 @@
 [npm-url]: https://npmjs.org/package/%40alessiofrittoli%2Fserver-sent-events
 [coverage-badge]: https://coveralls.io/repos/github/alessiofrittoli/server-sent-events/badge.svg
 [coverage-url]: https://coveralls.io/github/alessiofrittoli/server-sent-events
+[socket-badge]: https://socket.dev/api/badge/npm/package/@alessiofrittoli/server-sent-events
+[socket-url]: https://socket.dev/npm/package/@alessiofrittoli/server-sent-events/overview
 [downloads-badge]: https://img.shields.io/npm/dm/%40alessiofrittoli%2Fserver-sent-events.svg
 [deps-badge]: https://img.shields.io/librariesio/release/npm/%40alessiofrittoli%2Fserver-sent-events
 [deps-url]: https://libraries.io/npm/%40alessiofrittoli%2Fserver-sent-events

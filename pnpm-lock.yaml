@@ -9,15 +9,15 @@ importers:
   .:
     dependencies:
       '@alessiofrittoli/stream-writer':
-        specifier: ^1.1.0
-        version: 1.1.0
+        specifier: ^1.1.1
+        version: 1.1.1
     devDependencies:
       '@alessiofrittoli/node-scripts':
-        specifier: ^2.3.0
-        version: 2.3.0
+        specifier: ^2.3.1
+        version: 2.3.1
       '@alessiofrittoli/stream-reader':
-        specifier: ^2.2.0
-        version: 2.2.0
+        specifier: ^2.2.1
+        version: 2.2.1
       '@eslint/js':
         specifier: ^9.22.0
         version: 9.22.0
@@ -69,17 +69,17 @@ importers:
 
 packages:
 
-  '@alessiofrittoli/event-emitter@1.2.0':
-    resolution: {integrity: sha512-ZjcAI3bScWwrkvmKzxq+7bl6VZsi+IZVaqN9Hx8trFIcQNUFznlD5I40XX182t8ml1VlA22ZUCW+qiymjmM1RQ==}
+  '@alessiofrittoli/event-emitter@1.2.1':
+    resolution: {integrity: sha512-+o6ODtOzombJu8le1lVWtxMOSLr19+XZ8QabKuqi6NidepmUyj2g+kizefGq6Ovmh32ldaxIUyEm8Bhph+zejw==}
 
-  '@alessiofrittoli/node-scripts@2.3.0':
-    resolution: {integrity: sha512-0v14p/OgZTkN2DjHvS9HuN83Dj9bjoWUwwA1EGzDLv631z6KRiGEEbzdNGoqINuonwupqkM4AGZaJ9FEj8xE7Q==}
+  '@alessiofrittoli/node-scripts@2.3.1':
+    resolution: {integrity: sha512-lREwbQ1LWI2G1qb42NKrfAVELrKLD91e50mVTVovc2l6ZVmapu/heNeKB+txgqONzk5VsDCMb+qAWGYqTiWHDA==}
 
-  '@alessiofrittoli/stream-reader@2.2.0':
-    resolution: {integrity: sha512-5HtEaiFfe7T2RbUl/3VGdq+Rrc1pNPqp7+mKIhCQ0tQCP/dA1ykqqDrPVYZsVgZfSF4BwKdVlg4PlvbOtTv6RA==}
+  '@alessiofrittoli/stream-reader@2.2.1':
+    resolution: {integrity: sha512-9RlMdz/xOXWEt+tf226a+SAJlp2eB0pZw7ogo+/CdM9bXxoryF5hu+SXYHnaLU+M0IhnOCkKvO5pnbGkQ8J4rQ==}
 
-  '@alessiofrittoli/stream-writer@1.1.0':
-    resolution: {integrity: sha512-S2NRWUfUhgSXhd6iccexYXjwVgqLfL4VDRoyoBGkKSgHEdb5fOF/DFm9KlI9BncU7Sftl69A3pcpEJqMyrI+Yw==}
+  '@alessiofrittoli/stream-writer@1.1.1':
+    resolution: {integrity: sha512-gKEP6GqJmzP9TsXzYJ2USMLj3EnDvaCdl2BubgNKSuwgwF+0U3FCLAVFoi0KV7npb3dfJK7zk+4+CvQtVQn7ZQ==}
 
   '@ampproject/remapping@2.3.0':
     resolution: {integrity: sha512-30iZtAPgz+LTIYoeivqYo853f02jBYSd5uGnGpkFV0M3xOt9aN73erkgYAmZU43x4VfqcnLxW9Kpg3R5LC4YYw==}
@@ -2456,15 +2456,15 @@ packages:
 
 snapshots:
 
-  '@alessiofrittoli/event-emitter@1.2.0': {}
+  '@alessiofrittoli/event-emitter@1.2.1': {}
 
-  '@alessiofrittoli/node-scripts@2.3.0': {}
+  '@alessiofrittoli/node-scripts@2.3.1': {}
 
-  '@alessiofrittoli/stream-reader@2.2.0':
+  '@alessiofrittoli/stream-reader@2.2.1':
     dependencies:
-      '@alessiofrittoli/event-emitter': 1.2.0
+      '@alessiofrittoli/event-emitter': 1.2.1
 
-  '@alessiofrittoli/stream-writer@1.1.0': {}
+  '@alessiofrittoli/stream-writer@1.1.1': {}
 
   '@ampproject/remapping@2.3.0':
     dependencies:
