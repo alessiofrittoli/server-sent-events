@@ -16,8 +16,8 @@ importers:
         specifier: ^2.3.0
         version: 2.3.0
       '@alessiofrittoli/stream-reader':
-        specifier: ^2.1.0
-        version: 2.1.0
+        specifier: ^2.1.1
+        version: 2.1.1
       '@eslint/js':
         specifier: ^9.22.0
         version: 9.22.0
@@ -75,8 +75,8 @@ packages:
   '@alessiofrittoli/node-scripts@2.3.0':
     resolution: {integrity: sha512-0v14p/OgZTkN2DjHvS9HuN83Dj9bjoWUwwA1EGzDLv631z6KRiGEEbzdNGoqINuonwupqkM4AGZaJ9FEj8xE7Q==}
 
-  '@alessiofrittoli/stream-reader@2.1.0':
-    resolution: {integrity: sha512-wHOV3C6Eh6AJHAwlq9xXDa7DIFofh7KF95TMhXyqmxq6LRmvvgl8WOC9P/mArr9Fwuje+LWODgHfEi8prpC0Aw==}
+  '@alessiofrittoli/stream-reader@2.1.1':
+    resolution: {integrity: sha512-c4f2x7y3rW8eezE6XdFjjDsd30seXU+g1VqSBi7XwU/4R8fXg4EQsvZz8nO4m73QsUjJP8GcWkPNL+4ciHOwiw==}
 
   '@alessiofrittoli/stream-writer@1.1.0':
     resolution: {integrity: sha512-S2NRWUfUhgSXhd6iccexYXjwVgqLfL4VDRoyoBGkKSgHEdb5fOF/DFm9KlI9BncU7Sftl69A3pcpEJqMyrI+Yw==}
@@ -2447,7 +2447,7 @@ snapshots:
 
   '@alessiofrittoli/node-scripts@2.3.0': {}
 
-  '@alessiofrittoli/stream-reader@2.1.0':
+  '@alessiofrittoli/stream-reader@2.1.1':
     dependencies:
       '@alessiofrittoli/event-emitter': 1.2.0
 
