@@ -1,6 +1,5 @@
 import { ServerSentEvents } from '@/index'
-import { StreamReader } from '@alessiofrittoli/stream-reader'
-import type { TransformChunk } from '@alessiofrittoli/stream-reader/types'
+import { StreamReader, type TransformChunk } from '@alessiofrittoli/stream-reader'
 
 const sleep = ( ms: number ): Promise<void> => new Promise( resolve => setTimeout( resolve, ms ) )
 
