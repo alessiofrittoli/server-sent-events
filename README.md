@@ -2,6 +2,8 @@
 
 [![NPM Latest Version][version-badge]][npm-url] [![Coverage Status][coverage-badge]][coverage-url] [![NPM Monthly Downloads][downloads-badge]][npm-url] [![Dependencies][deps-badge]][deps-url]
 
+[![GitHub Sponsor][sponsor-badge]][sponsor-url]
+
 [version-badge]: https://img.shields.io/npm/v/%40alessiofrittoli%2Fserver-sent-events
 [npm-url]: https://npmjs.org/package/%40alessiofrittoli%2Fserver-sent-events
 [coverage-badge]: https://coveralls.io/repos/github/alessiofrittoli/server-sent-events/badge.svg
@@ -9,6 +11,9 @@
 [downloads-badge]: https://img.shields.io/npm/dm/%40alessiofrittoli%2Fserver-sent-events.svg
 [deps-badge]: https://img.shields.io/librariesio/release/npm/%40alessiofrittoli%2Fserver-sent-events
 [deps-url]: https://libraries.io/npm/%40alessiofrittoli%2Fserver-sent-events
+
+[sponsor-badge]: https://img.shields.io/static/v1?label=Fund%20this%20package&message=%E2%9D%A4&logo=GitHub&color=%23DB61A2
+[sponsor-url]: https://github.com/sponsors/alessiofrittoli
 
 ## Class Based implementation for [Server-Sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events)
 
@@ -27,6 +32,11 @@
     - [Reading server-sent custom events data](#reading-server-sent-custom-events-data)
     - [Closing the EventSource](#closing-the-eventsource)
     - [EventSource Error handling](#eventsource-error-handling)
+- [Development](#development)
+  - [Install depenendencies](#install-depenendencies)
+  - [Build the source code](#build-the-source-code)
+  - [ESLint](#eslint)
+  - [Jest](#jest)
 - [Contributing](#contributing)
 - [Security](#security)
 - [Credits](#made-with-)
@@ -354,10 +364,77 @@ eventSource.addEventListener( 'error', event => {
 
 ---
 
+### Development
+
+#### Install depenendencies
+
+```bash
+npm install
+```
+
+or using `pnpm`
+
+```bash
+pnpm i
+```
+
+#### Build the source code
+
+Run the following command to test and build code for distribution.
+
+```bash
+pnpm build
+```
+
+#### [ESLint](https://www.npmjs.com/package/eslint)
+
+warnings / errors check.
+
+```bash
+pnpm lint
+```
+
+#### [Jest](https://npmjs.com/package/jest)
+
+Run all the defined test suites by running the following:
+
+```bash
+# Run tests and watch file changes.
+pnpm test:watch
+
+# Run tests in a CI environment.
+pnpm test:ci
+```
+
+You can eventually run specific suits like so:
+
+- See [`package.json`](./package.json) file scripts for more info.
+
+```bash
+pnpm test:jest
+```
+
+Run tests with coverage.
+
+An HTTP server is then started to serve coverage files from `./coverage` folder.
+
+⚠️ You may see a blank page the first time you run this command. Simply refresh the browser to see the updates.
+
+```bash
+test:coverage:serve
+```
+
+---
+
 ### Contributing
 
-Contributions are truly welcome!\
+Contributions are truly welcome!
+
 Please refer to the [Contributing Doc](./CONTRIBUTING.md) for more information on how to start contributing to this project.
+
+Help keep this project up to date with [GitHub Sponsor][sponsor-url].
+
+[![GitHub Sponsor][sponsor-badge]][sponsor-url]
 
 ---
 
