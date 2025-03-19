@@ -1,5 +1,6 @@
 import { ServerSentEvents } from '@/index'
 import { StreamReader } from '@alessiofrittoli/stream-reader'
+import type { TransformChunk } from '@alessiofrittoli/stream-reader/types'
 
 const sleep = ( ms: number ): Promise<void> => new Promise( resolve => setTimeout( resolve, ms ) )
 
@@ -9,6 +10,10 @@ const streamData = async ( sse: ServerSentEvents, error?: boolean ) => {
 	if ( error ) throw new Error( 'Test error' )
 	await sse.write( { message: 'somedata 2' } )
 }
+
+const transform: TransformChunk<Uint8Array, string> = (
+	chunk => Buffer.from( chunk ).toString()
+)
 
 describe( 'ServerSentEvents', () => {
 	let sse: ServerSentEvents
@@ -25,8 +30,8 @@ describe( 'ServerSentEvents', () => {
 		sse.write( { message: 'somedata' } )
 		sse.close()
 
-		const reader = new StreamReader<Uint8Array, string>( sse.readable )
-		const chunks = await reader.read( chunk => Buffer.from( chunk ).toString() )
+		const reader = new StreamReader<Uint8Array, string>( sse.readable, { transform } )
+		const chunks = await reader.read()
 		
 		expect( chunks.includes( 'retry: 1000\n' ) ).toBe( true )
 	} )
@@ -48,8 +53,8 @@ describe( 'ServerSentEvents.write()', () => {
 		sse.write( data, 'customEvent' )
 		sse.close()
 
-		const reader = new StreamReader<Uint8Array, string>( sse.readable )
-		const chunks = await reader.read( chunk => Buffer.from( chunk ).toString() )
+		const reader = new StreamReader<Uint8Array, string>( sse.readable, { transform } )
+		const chunks = await reader.read()
 
 		expect( chunks.includes( `event: customEvent\ndata: ${ JSON.stringify( data ) }\n\n` ) ).toBe( true )
 	} )
@@ -70,8 +75,8 @@ describe( 'ServerSentEvents.close()', () => {
 		sse.write( { message: 'somedata' } )
 			.then( () => sse.close() )
 
-		const reader = new StreamReader<Uint8Array, string>( sse.readable )
-		const chunks = await reader.read( chunk => Buffer.from( chunk ).toString() )
+		const reader = new StreamReader<Uint8Array, string>( sse.readable, { transform } )
+		const chunks = await reader.read()
 					
 		expect( chunks.includes( 'event: end\ndata: ""\n\n' ) ).toBe( true )
 	} )
@@ -88,8 +93,8 @@ describe( 'ServerSentEvents.close()', () => {
 				sse.close()
 			} )
 
-		const reader = new StreamReader<Uint8Array, string>( sse.readable )
-		const chunks = await reader.read( chunk => Buffer.from( chunk ).toString() )
+		const reader = new StreamReader<Uint8Array, string>( sse.readable, { transform } )
+		const chunks = await reader.read()
 				
 		expect(
 			chunks.filter( chunk => chunk.includes( 'event: end\ndata: ""\n\n' ) ).length
@@ -114,8 +119,8 @@ describe( 'ServerSentEvents.error()', () => {
 			.then( () => sse.close() )
 			.catch( error => sse.error( error ) )
 
-		const reader = new StreamReader<Uint8Array, string>( sse.readable )
-		const chunks = await reader.read( chunk => Buffer.from( chunk ).toString() )
+		const reader = new StreamReader<Uint8Array, string>( sse.readable, { transform } )
+		const chunks = await reader.read()
 
 		expect( chunks.includes( 'event: error\ndata: "Test error"\n\n' ) ).toBe( true )
 	} )
@@ -139,8 +144,8 @@ describe( 'ServerSentEvents.error()', () => {
 			.then( () => sse.close() )
 			.catch( () => sse.error( new CustomError( 'Custom Error', { cause: 'ERR:UNKNOWN' } ) ) )
 
-		const reader = new StreamReader<Uint8Array, string>( sse.readable )
-		const chunks = await reader.read( chunk => Buffer.from( chunk ).toString() )
+		const reader = new StreamReader<Uint8Array, string>( sse.readable, { transform } )
+		const chunks = await reader.read()
 
 		expect(
 			chunks.includes( 'event: error\ndata: {"message":"Custom Error","cause":"ERR:UNKNOWN"}\n\n' )
@@ -156,8 +161,8 @@ describe( 'ServerSentEvents.error()', () => {
 			.catch( error => sse.error( error ) )
 
 
-		const reader = new StreamReader<Uint8Array, string>( sse.readable )
-		const chunks = await reader.read( chunk => Buffer.from( chunk ).toString() )
+		const reader = new StreamReader<Uint8Array, string>( sse.readable, { transform } )
+		const chunks = await reader.read()
 		
 		expect( chunks.includes( 'event: end\ndata: ""\n\n' ) ).toBe( true )
 	} )
@@ -174,8 +179,8 @@ describe( 'ServerSentEvents.error()', () => {
 			} )
 
 
-		const reader = new StreamReader<Uint8Array, string>( sse.readable )
-		const chunks = await reader.read( chunk => Buffer.from( chunk ).toString() )
+		const reader = new StreamReader<Uint8Array, string>( sse.readable, { transform } )
+		const chunks = await reader.read()
 	
 		expect(
 			chunks.filter( chunk => chunk.includes( 'event: error\ndata: "Test error"\n\n' ) ).length
