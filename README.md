@@ -408,13 +408,7 @@ pnpm test:watch
 pnpm test:ci
 ```
 
-You can eventually run specific suits like so:
-
 - See [`package.json`](./package.json) file scripts for more info.
-
-```bash
-pnpm test:jest
-```
 
 Run tests with coverage.
 
@@ -455,19 +449,19 @@ If you believe you have found a security vulnerability, we encourage you to **_r
       <td>
         <table style='display:flex;gap:2px;flex-direction:column;'>
           <tbody>
-            <tr>
-              <td>
+              <tr>
+                <td>
                   <a href='https://github.com/alessiofrittoli' target='_blank' rel='noopener'>Alessio Frittoli</a>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <small>
-                  <a href='https://alessiofrittoli.it' target='_blank' rel='noopener'>https://alessiofrittoli.it</a> |
-                  <a href='mailto:info@alessiofrittoli.it' target='_blank' rel='noopener'>info@alessiofrittoli.it</a>
-                </small>
-              </td>
-            </tr>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <small>
+                    <a href='https://alessiofrittoli.it' target='_blank' rel='noopener'>https://alessiofrittoli.it</a> |
+                    <a href='mailto:info@alessiofrittoli.it' target='_blank' rel='noopener'>info@alessiofrittoli.it</a>
+                  </small>
+                </td>
+              </tr>
           </tbody>
         </table>
       </td>
