@@ -6,6 +6,12 @@ export interface ServerSentEventsProps {
 	 *
 	 */
 	retry?: number
+	/**
+	 * Defines whether to automatically close the stream when `ServerSentEvents.error()` is called.
+	 *
+	 * @default true
+	 */
+	autoclose?: boolean
 }
 
 export type Directive = `${string}: ${string}\n`
@@ -57,6 +63,7 @@ export class ServerSentEvents extends Stream<string, Uint8Array> implements Serv
 	 */
 	public readonly encoder: TextEncoder
 	public readonly retry
+	public readonly autoclose
 
 	/**
 	 * Indicates whether the connection is in the process of closing.
@@ -83,6 +90,7 @@ export class ServerSentEvents extends Stream<string, Uint8Array> implements Serv
 		this.encoder = encoder
 		this.closed = false
 		this.retry = props?.retry
+		this.autoclose = props?.autoclose ?? true
 
 		const retryIsValid = !!this.retry
 
@@ -144,7 +152,11 @@ export class ServerSentEvents extends Stream<string, Uint8Array> implements Serv
 
 			await this.write(error, 'error')
 
-			return await this.close()
+			if (this.autoclose) {
+				return await this.close()
+			}
+
+			return this
 		} catch {
 			return this.close()
 		}
