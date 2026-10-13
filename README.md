@@ -13,7 +13,6 @@
 [downloads-badge]: https://img.shields.io/npm/dm/%40alessiofrittoli%2Fserver-sent-events.svg
 [deps-badge]: https://img.shields.io/librariesio/release/npm/%40alessiofrittoli%2Fserver-sent-events
 [deps-url]: https://libraries.io/npm/%40alessiofrittoli%2Fserver-sent-events
-
 [sponsor-badge]: https://img.shields.io/static/v1?label=Fund%20this%20package&message=%E2%9D%A4&logo=GitHub&color=%23DB61A2
 [sponsor-url]: https://github.com/sponsors/alessiofrittoli
 
@@ -35,7 +34,7 @@
     - [Closing the EventSource](#closing-the-eventsource)
     - [EventSource Error handling](#eventsource-error-handling)
 - [Development](#development)
-  - [Install depenendencies](#install-depenendencies)
+  - [Install dependencies](#install-dependencies)
   - [Build the source code](#build-the-source-code)
   - [ESLint](#eslint)
   - [Jest](#jest)
@@ -58,13 +57,11 @@ Simple return `ServerSentEvents.stream.readable` in a `Response` instance to sta
 ⚠️ The streaming Response implementation depends on your back-end application.
 
 ```typescript
-import { ServerSentEvents } from '@alessiofrittoli/server-sent-events'
+import { ServerSentEvents } from "@alessiofrittoli/server-sent-events";
 
-const sse = new ServerSentEvents()
+const sse = new ServerSentEvents();
 
-return (
-  new Response( sse.stream.readable, { headers: sse.headers } )
-)
+return new Response(sse.stream.readable, { headers: sse.headers });
 ```
 
 ##### Writing into the stream
@@ -76,36 +73,30 @@ The data is then read by the client by listening to the default `message` event 
 For this example we are going to execute a function which simulates an asynchronous long task.
 
 ```typescript
-import { ServerSentEvents } from '@alessiofrittoli/server-sent-events'
+import { ServerSentEvents } from "@alessiofrittoli/server-sent-events";
 
-export const sleep = ( ms: number ) => (
-  new Promise<void>( resolve => setTimeout( resolve, ms ) )
-)
+export const sleep = (ms: number) =>
+  new Promise<void>((resolve) => setTimeout(resolve, ms));
 
-const longRunningTask = async ( stream: ServerSentEvents ) => {
-  await stream.write( { message: 'Started' } )
-  await sleep( 1000 )
-  await stream.write( { message: 'Done 15%' } )
-  await sleep( 1000 )
-  await stream.write( { message: 'Done 35%' } )
-  await sleep( 1000 )
-  await stream.write( { message: 'Done 75%' } )
-  await sleep( 1000 )
-  await stream.write( { message: 'Final data' } )
-}
-
+const longRunningTask = async (stream: ServerSentEvents) => {
+  await stream.write({ message: "Started" });
+  await sleep(1000);
+  await stream.write({ message: "Done 15%" });
+  await sleep(1000);
+  await stream.write({ message: "Done 35%" });
+  await sleep(1000);
+  await stream.write({ message: "Done 75%" });
+  await sleep(1000);
+  await stream.write({ message: "Final data" });
+};
 
 const businessLogic = () => {
+  const sse = new ServerSentEvents();
 
-  const sse = new ServerSentEvents()
+  longRunningTask(sse);
 
-  longRunningTask( sse )
-
-  return (
-      new Response( sse.stream.readable )
-  )
-
-}
+  return new Response(sse.stream.readable);
+};
 ```
 
 ##### Custom events
@@ -165,7 +156,7 @@ The `EventSource` API has a built-in automatic reconnection mechanism. If the co
 When creating a new instance of `ServerSentEvents` we can specify the reconnection delay value in milliseconds to the "retry" property of the constructor like so:
 
 ```typescript
-const sse = new ServerSentEvents( { retry: 5000 } )
+const sse = new ServerSentEvents({ retry: 5000 });
 ```
 
 ##### Error handling
@@ -358,17 +349,17 @@ By default, errors are handled by listening to the "error" event on the EventSou
 The server may use this event too to return handled errors occured on the server while running its tasks.
 
 ```typescript
-eventSource.addEventListener( 'error', event => {
-  eventSource.close()
-  console.log( '"error" event', eventSource.readyState, event )
-} )
+eventSource.addEventListener("error", (event) => {
+  eventSource.close();
+  console.log('"error" event', eventSource.readyState, event);
+});
 ```
 
 ---
 
 ### Development
 
-#### Install depenendencies
+#### Install dependencies
 
 ```bash
 npm install
@@ -390,7 +381,7 @@ pnpm build
 
 #### [ESLint](https://www.npmjs.com/package/eslint)
 
-warnings / errors check.
+Run warnings and errors checks.
 
 ```bash
 pnpm lint
