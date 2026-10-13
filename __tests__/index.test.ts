@@ -68,7 +68,7 @@ describe('ServerSentEvents', () => {
 			const reader = new StreamReader<Uint8Array, string>(sse.readable, { transform })
 			const chunks = await reader.read()
 
-			expect(chunks.includes(`event: customEvent\ndata: ${JSON.stringify(data)}\n\n`)).toBe(true)
+			expect(chunks).include(`event: customEvent\ndata: ${JSON.stringify(data)}\n\n`)
 		})
 	})
 
@@ -79,7 +79,7 @@ describe('ServerSentEvents', () => {
 			const reader = new StreamReader<Uint8Array, string>(sse.readable, { transform })
 			const chunks = await reader.read()
 
-			expect(chunks.includes('event: end\ndata: ""\n\n')).toBe(true)
+			expect(chunks).include('event: end\ndata: ""\n\n')
 		})
 
 		it('pushes "end" event once when called multiple times', async () => {
@@ -110,7 +110,7 @@ describe('ServerSentEvents', () => {
 			const reader = new StreamReader<Uint8Array, string>(sse.readable, { transform })
 			const chunks = await reader.read()
 
-			expect(chunks.includes(`event: error\ndata: ${JSON.stringify(streamError)}\n\n`)).toBe(true)
+			expect(chunks).include(`event: error\ndata: ${JSON.stringify(streamError)}\n\n`)
 		})
 
 		it('pushes "error" event with original data if serializable', async () => {
@@ -125,16 +125,16 @@ describe('ServerSentEvents', () => {
 				}
 			}
 
+			const customError = new CustomError('Custom Error', { cause: 'ERR:UNKNOWN' })
+
 			streamData(sse, true)
 				.then(() => sse.close())
-				.catch(() => sse.error(new CustomError('Custom Error', { cause: 'ERR:UNKNOWN' })))
+				.catch(() => sse.error(customError))
 
 			const reader = new StreamReader<Uint8Array, string>(sse.readable, { transform })
 			const chunks = await reader.read()
 
-			expect(
-				chunks.includes('event: error\ndata: {"message":"Custom Error","cause":"ERR:UNKNOWN"}\n\n'),
-			).toBe(true)
+			expect(chunks).include(`event: error\ndata: ${JSON.stringify(customError)}\n\n`)
 		})
 
 		it('prints a warning if the given error is unserializable', async () => {
@@ -149,7 +149,7 @@ describe('ServerSentEvents', () => {
 				'The given error is unserializable. Make sure `toJSON` is defined in the given error.',
 			)
 
-			expect(chunks.includes('event: error\ndata: {}\n\n')).toBe(true)
+			expect(chunks).include('event: error\ndata: {}\n\n')
 		})
 
 		it('automatically closes the stream when an error occurs', async () => {
@@ -160,7 +160,7 @@ describe('ServerSentEvents', () => {
 			const reader = new StreamReader<Uint8Array, string>(sse.readable, { transform })
 			const chunks = await reader.read()
 
-			expect(chunks.includes('event: end\ndata: ""\n\n')).toBe(true)
+			expect(chunks).include('event: end\ndata: ""\n\n')
 		})
 
 		it('pushes "error" event once when called multiple times and autoclose is set to true', async () => {
@@ -206,6 +206,37 @@ describe('ServerSentEvents', () => {
 
 			expect(writeMock).toHaveBeenCalledWith(streamError, 'error')
 			expect(closeMock).toHaveBeenCalledTimes(1)
+		})
+
+		it("doesn't close the stream if autoclose is set to false", async () => {
+			const sse = new ServerSentEvents({ autoclose: false })
+
+			const secondError = new Exception({
+				message: 'Error #2',
+				code: 2,
+			})
+
+			streamData(sse, true)
+				.then(() => {
+					sse.close()
+				})
+				.catch(async error => {
+					sse.error(error).then(() => {
+						expect(sse.closed).toBe(false)
+					})
+
+					sse.error(secondError).then(() => {
+						expect(sse.closed).toBe(false)
+					})
+
+					sse.close()
+				})
+
+			const reader = new StreamReader<Uint8Array, string>(sse.readable, { transform })
+			const chunks = await reader.read()
+
+			expect(chunks).include(`event: error\ndata: ${JSON.stringify(streamError)}\n\n`)
+			expect(chunks).include(`event: error\ndata: ${JSON.stringify(secondError)}\n\n`)
 		})
 	})
 
