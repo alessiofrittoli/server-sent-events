@@ -1,70 +1,190 @@
-# Server-Sent Events ✅
+<h1 align="center">Server-Sent Events ✅</h1>
+<h2 align="center">
+  Class Based implementation for <a href="https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events">Server-Sent events</a>
+</h2>
+<p align="center">
+  <a href="https://npmjs.org/package/@alessiofrittoli/server-sent-events">
+    <img src="https://img.shields.io/npm/v/@alessiofrittoli/server-sent-events" alt="Latest version"/>
+  </a>
+  <a href="https://coveralls.io/github/alessiofrittoli/exception">
+    <img src="https://coveralls.io/repos/github/alessiofrittoli/exception/badge.svg" alt="Test coverage"/>
+  </a>
+  <a href="https://socket.dev/npm/package/@alessiofrittoli/server-sent-events/overview">
+    <img src="https://socket.dev/api/badge/npm/package/@alessiofrittoli/server-sent-events" alt="Socket Security score"/>
+  </a>
+  <a href="https://npmjs.org/package/@alessiofrittoli/server-sent-events">
+    <img src="https://img.shields.io/npm/dm/@alessiofrittoli/server-sent-events.svg" alt="npm downloads"/>
+  </a>
+  <a href="https://bundlephobia.com/package/@alessiofrittoli/server-sent-events">
+    <img src="https://badgen.net/bundlephobia/dependency-count/@alessiofrittoli/server-sent-events" alt="Dependencies"/>
+  </a>
+  <a href="https://libraries.io/npm/%40alessiofrittoli%2Fexception">
+    <img src="https://img.shields.io/librariesio/release/npm/@alessiofrittoli/server-sent-events" alt="Dependencies status"/>
+  </a>
+</p>
+<p align="center">
+  <a href="https://bundlephobia.com/package/@alessiofrittoli/server-sent-events">
+    <img src="https://badgen.net/bundlephobia/min/@alessiofrittoli/server-sent-events" alt="minified"/>
+  </a>
+  <a href="https://bundlephobia.com/package/@alessiofrittoli/server-sent-events">
+    <img src="https://badgen.net/bundlephobia/minzip/@alessiofrittoli/server-sent-events" alt="minizipped"/>
+  </a>
+  <a href="https://bundlephobia.com/package/@alessiofrittoli/server-sent-events">
+    <img src="https://badgen.net/bundlephobia/tree-shaking/@alessiofrittoli/server-sent-events" alt="Tree shakable"/>
+  </a>
+</p>
+<p align="center">
+  <a href="https://github.com/sponsors/alessiofrittoli">
+    <img src="https://img.shields.io/static/v1?label=Fund%20this%20package&message=%E2%9D%A4&logo=GitHub&color=%23DB61A2" alt="Fund this package"/>
+  </a>
+</p>
 
-[![NPM Latest Version][version-badge]][npm-url] [![Coverage Status][coverage-badge]][coverage-url] [![Socket Status][socket-badge]][socket-url] [![NPM Monthly Downloads][downloads-badge]][npm-url] [![Dependencies][deps-badge]][deps-url]
-
-[![GitHub Sponsor][sponsor-badge]][sponsor-url]
-
-[version-badge]: https://img.shields.io/npm/v/%40alessiofrittoli%2Fserver-sent-events
-[npm-url]: https://npmjs.org/package/%40alessiofrittoli%2Fserver-sent-events
-[coverage-badge]: https://coveralls.io/repos/github/alessiofrittoli/server-sent-events/badge.svg
-[coverage-url]: https://coveralls.io/github/alessiofrittoli/server-sent-events
-[socket-badge]: https://socket.dev/api/badge/npm/package/@alessiofrittoli/server-sent-events
-[socket-url]: https://socket.dev/npm/package/@alessiofrittoli/server-sent-events/overview
-[downloads-badge]: https://img.shields.io/npm/dm/%40alessiofrittoli%2Fserver-sent-events.svg
-[deps-badge]: https://img.shields.io/librariesio/release/npm/%40alessiofrittoli%2Fserver-sent-events
-[deps-url]: https://libraries.io/npm/%40alessiofrittoli%2Fserver-sent-events
 [sponsor-badge]: https://img.shields.io/static/v1?label=Fund%20this%20package&message=%E2%9D%A4&logo=GitHub&color=%23DB61A2
 [sponsor-url]: https://github.com/sponsors/alessiofrittoli
 
-## Class Based implementation for [Server-Sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events)
-
-### Table of Contents
+### Table of Content
 
 - [Getting started](#getting-started)
-  - [Server-Side](#server-side)
-    - [Streaming events data](#streaming-events-data)
-    - [Writing into the stream](#writing-into-the-stream)
-    - [Custom events](#custom-events)
-    - [Closing the stream](#closing-the-stream)
-    - [Error handling](#error-handling)
-    - [Abort handling](#abort-handling)
-  - [Client-Side](#client-side)
-    - [Reading server-sent events data](#reading-server-sent-events-data)
-    - [Reading server-sent custom events data](#reading-server-sent-custom-events-data)
-    - [Closing the EventSource](#closing-the-eventsource)
-    - [EventSource Error handling](#eventsource-error-handling)
 - [Development](#development)
-  - [Install dependencies](#install-dependencies)
-  - [Build the source code](#build-the-source-code)
-  - [ESLint](#eslint)
-  - [Jest](#jest)
-- [Contributing](#contributing)
-- [Security](#security)
+  - [Local development](#local-development)
+  - [Production build](#production-build)
+  - [Unit tests](#unit-tests)
+    - [Run tests with coverage](#run-tests-with-coverage)
+  - [Contributing](#contributing)
+  - [Security](#security)
+- [Server-Side](#server-side)
+  - [Streaming events data](#streaming-events-data)
+  - [Writing into the stream](#writing-into-the-stream)
+  - [Custom events](#custom-events)
+  - [Closing the stream](#closing-the-stream)
+  - [Error handling](#error-handling)
+  - [Abort handling](#abort-handling)
+- [Client-Side](#client-side)
+  - [Reading server-sent events data](#reading-server-sent-events-data)
+  - [Reading server-sent custom events data](#reading-server-sent-custom-events-data)
+  - [Closing the EventSource](#closing-the-eventsource)
+  - [EventSource Error handling](#eventsource-error-handling)
 - [Credits](#made-with-)
+
+---
 
 ### Getting started
 
-#### Server-Side
+Run the following command to start using `server-sent-events` in your projects:
 
-##### Streaming events data
+```bash
+npm i @alessiofrittoli/server-sent-events
+```
+
+or using `pnpm`
+
+```bash
+pnpm i @alessiofrittoli/server-sent-events
+```
+
+---
+
+### Development
+
+Run the following to start development
+
+```shell
+nvm use
+
+pnpm i
+```
+
+#### Local development
+
+Run the following
+
+```shell
+pnpm dev
+```
+
+This will generate unminified output code, sourcemaps and will enable source file watcher.
+
+---
+
+#### Production build
+
+Run the following to create a local production build
+
+```shell
+pnpm build
+```
+
+This will generate minified output code without sourcemaps.
+
+---
+
+#### Unit tests
+
+Run all the defined test suites by running the following:
+
+```shell
+# Run tests and watch file changes.
+pnpm test:watch
+
+# Run tests in a CI environment.
+pnpm test:ci
+```
+
+---
+
+##### Run tests with coverage
+
+An HTTP server is then started to serve coverage files from `./coverage` folder.
+
+⚠️ You may see a blank page the first time you run this command. Simply refresh the browser to see the updates.
+
+```shell
+pnpm test:coverage:serve
+```
+
+---
+
+#### Contributing
+
+Contributions are truly welcome!
+
+Please refer to the [Contributing Doc](./CONTRIBUTING.md) for more information on how to start contributing to this project.
+
+Help keep this project up to date with [GitHub Sponsor][sponsor-url].
+
+[![GitHub Sponsor][sponsor-badge]][sponsor-url]
+
+---
+
+### Security
+
+If you believe you have found a security vulnerability, we encourage you to **_responsibly disclose this and NOT open a public issue_**. We will investigate all legitimate reports. Email `security@alessiofrittoli.it` to disclose any security vulnerabilities.
+
+---
+
+### Server-Side
+
+#### Streaming events data
 
 With server-sent events, it's possible for a server to send new data to a web page at any time, by pushing messages to the web page. These incoming messages can be treated as Events + data inside the web page.
 
 By creating a new instance of `ServerSentEvents` class you will get access to methods required to stream data to the client.
 
-Simple return `ServerSentEvents.stream.readable` in a `Response` instance to start streaming data.\
+Simple return `ServerSentEvents.readable` in a `Response` instance to start streaming data.\
 ⚠️ Do not forget to return the proper response headers.\
 ⚠️ The streaming Response implementation depends on your back-end application.
 
-```typescript
-import { ServerSentEvents } from "@alessiofrittoli/server-sent-events";
+```ts
+import { ServerSentEvents } from '@alessiofrittoli/server-sent-events'
 
-const sse = new ServerSentEvents();
+const sse = new ServerSentEvents()
 
-return new Response(sse.stream.readable, { headers: sse.headers });
+return new Response(sse.readable, { headers: sse.headers })
 ```
 
-##### Writing into the stream
+---
+
+#### Writing into the stream
 
 By using the method `ServerSentEvents.write()` you can write and push any serializeable data to the client.\
 This method will serialize your data before sending it to the client by using `JSON.stringify()`.\
@@ -72,41 +192,42 @@ The data is then read by the client by listening to the default `message` event 
 
 For this example we are going to execute a function which simulates an asynchronous long task.
 
-```typescript
-import { ServerSentEvents } from "@alessiofrittoli/server-sent-events";
+```ts
+import { ServerSentEvents } from '@alessiofrittoli/server-sent-events'
 
-export const sleep = (ms: number) =>
-  new Promise<void>((resolve) => setTimeout(resolve, ms));
+export const sleep = (ms: number) => new Promise<void>(resolve => setTimeout(resolve, ms))
 
 const longRunningTask = async (stream: ServerSentEvents) => {
-  await stream.write({ message: "Started" });
-  await sleep(1000);
-  await stream.write({ message: "Done 15%" });
-  await sleep(1000);
-  await stream.write({ message: "Done 35%" });
-  await sleep(1000);
-  await stream.write({ message: "Done 75%" });
-  await sleep(1000);
-  await stream.write({ message: "Final data" });
-};
+  await stream.write({ message: 'Started' })
+  await sleep(1000)
+  await stream.write({ message: 'Done 15%' })
+  await sleep(1000)
+  await stream.write({ message: 'Done 35%' })
+  await sleep(1000)
+  await stream.write({ message: 'Done 75%' })
+  await sleep(1000)
+  await stream.write({ message: 'Final data' })
+}
 
 const businessLogic = () => {
-  const sse = new ServerSentEvents();
+  const sse = new ServerSentEvents()
 
-  longRunningTask(sse);
+  longRunningTask(sse)
 
-  return new Response(sse.stream.readable);
-};
+  return new Response(sse.readable)
+}
 ```
 
-##### Custom events
+---
+
+#### Custom events
 
 By default our data is implicitly sent over the default `message` event.
 
 However, you may need to push new data into the same connection stream under a custom event.\
 We can then specify its name as 2nd argument of the `ServerSentEvents.write()` method like so:
 
-```typescript
+```ts
 ...
 
 sse.write( { message: 'My data' }, 'customEvent' )
@@ -117,7 +238,9 @@ sse.write( { message: 'My data' }, 'customEvent' )
 Notice that the client should now add a new listener to the `EventSource` instance referring to the name of the custom event.\
 Please refer to the **_[Reading server-sent custom events data](#reading-server-sent-custom-events-data)_** section for more information.
 
-##### Closing the stream
+---
+
+#### Closing the stream
 
 The `EventSource` API has a built-in automatic reconnection mechanism. If the connection to the server is lost (due to network issues, server restart, etc.), the `EventSource` will try to reconnect after a delay if the client is not explicitly calling the [EventSource.close()](https://developer.mozilla.org/en-US/docs/Web/API/EventSource/close) method. By default, this delay is 3 seconds, see **_[Reconnection policies](#reconnection-policies)_** section for more information.
 
@@ -129,7 +252,7 @@ This method will push a custom event named "end" in the stream and close the `Se
 
 Since our previous function returns a void Promise, we can await it and then call the `ServerSentEvents.close()` method like so:
 
-```typescript
+```ts
 ...
 
 const businessLogic = () => {
@@ -143,30 +266,40 @@ const businessLogic = () => {
       } )
 
   return (
-      new Response( sse.stream.readable )
+      new Response( sse.readable )
   )
 
 }
 ```
 
-##### Reconnection policies
+---
+
+#### Reconnection policies
 
 The `EventSource` API has a built-in automatic reconnection mechanism. If the connection to the server is lost (due to network issues, server restart, etc.), the `EventSource` will try to reconnect after a delay if the client is not explicitly calling the [EventSource.close()](https://developer.mozilla.org/en-US/docs/Web/API/EventSource/close) method. By default, this delay is 3 seconds but the server can override this timing by setting the "retry" policy.
 
 When creating a new instance of `ServerSentEvents` we can specify the reconnection delay value in milliseconds to the "retry" property of the constructor like so:
 
-```typescript
-const sse = new ServerSentEvents({ retry: 5000 });
+```ts
+const sse = new ServerSentEvents({ retry: 5000 })
 ```
 
-##### Error handling
+---
+
+#### Error handling
 
 If an error occures in our `longRunningTask` example function we can use the `ServerSentEvents.error()` method to push a custom `error` event to the stream.
+
 The client should listen the default `error` event on the `EventSource` to handle errors client side.
 
 Good to know - Since the `ServerSentEvents.error()` will push an event with the name `error`, the client could use a single listener to listen default and custom errors (See **_[EventSource Error handling](#eventsource-error-handling)_** section to learn more about error handling on client).
 
-```typescript
+> [!WARNING]
+>
+> Note that the stream will automatically close after calling the `ServerSentEvents.error()` method.
+> To prevent stream autoclose on error you can set the `autoclose` option to `false` when creating a new instance of `ServerSentEvents`.
+
+```ts
 ...
 
 const businessLogic = () => {
@@ -187,7 +320,39 @@ const businessLogic = () => {
 }
 ```
 
-##### Abort handling
+---
+
+#### Preventing stream autoclose on error
+
+By default, the stream will automatically close after calling the `ServerSentEvents.error()` method.
+
+To prevent stream autoclose on error you can set the `autoclose` option to `false` when creating a new instance of `ServerSentEvents`. This allows multiple errors to be sent.
+
+```ts
+...
+
+const businessLogic = () => {
+
+  const sse = new ServerSentEvents( { autoclose: false } )
+
+  longRunningTask( sse )
+      .then( () => {
+          ...
+      } )
+      .catch( error => {
+          console.error( 'Failed', error )
+          sse.error( { message: error.message } )
+          sse.error( { message: 'Another custom error' } )
+      } )
+
+  ...
+
+}
+```
+
+---
+
+#### Abort handling
 
 Sometimes, error handling or awaiting a task to be finished before closing the stream could be not enough.
 Let's assume your task is an infinite task (like returning the time once a second) and the user abort the `EventSource` request by closing the client or by calling the [EventSource.close()](https://developer.mozilla.org/en-US/docs/Web/API/EventSource/close) method: your infinite task will be still running.
@@ -198,7 +363,7 @@ By listening for an abort signal, we can then execute the `ServerSentEvents.abor
 For this example, we are going to desing a function that will push to the stream the current date in a ISO string format once a second.
 In our interval we check if `ServerSentEvents.closed` has been set to `true` before pushing new data into the stream and resolve the Promise if so.
 
-```typescript
+```ts
 ...
 
 const timer = async ( stream: ServerSentEvents ) => {
@@ -241,7 +406,7 @@ const businessLogic = request => {
 
 If you do not check if `ServerSentEvents.closed` is `true` before pushing new data, the `ServerSentEvents.write()` method will throw a `DOMException` with the given `AbortError` reason.
 
-```typescript
+```ts
 ...
 
 const timer = async ( stream: ServerSentEvents ) => {
@@ -284,16 +449,16 @@ const businessLogic = request => {
 
 ---
 
-#### Client-Side
+### Client-Side
 
-##### Reading server-sent events data
+#### Reading server-sent events data
 
 To listen server-sent events we can use the native [EventSource](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) Web API.\
 The connection remains open until closed by calling [EventSource.close()](https://developer.mozilla.org/en-US/docs/Web/API/EventSource/close).
 
 Once the connection is opened, incoming messages from the server are delivered to your code in the form of events. If there is an event field in the incoming message, the triggered event is the same as the event field value. If no event field is present, then a generic `message` event is fired.
 
-```typescript
+```ts
 const eventSource = new EventSource( new URL( ... ) )
 
 eventSource.addEventListener( 'open', event => {
@@ -306,11 +471,13 @@ eventSource.addEventListener( 'message', event => {
 } )
 ```
 
-##### Reading server-sent custom events data
+---
+
+#### Reading server-sent custom events data
 
 To listen for incoming messages from the server sent over a custom event, we just add an event listener on the [EventSource](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) instance like we've done in the previous example.
 
-```typescript
+```ts
 ...
 
 eventSource.addEventListener( 'customEvent', event => {
@@ -319,11 +486,13 @@ eventSource.addEventListener( 'customEvent', event => {
 } )
 ```
 
-##### Closing the EventSource
+---
+
+#### Closing the EventSource
 
 We can call the [EventSource.close()](https://developer.mozilla.org/en-US/docs/Web/API/EventSource/close) method arbitrarily or listen to the "end" event sent by the server to close the EventSource connection.
 
-```typescript
+```ts
 ...
 
 const cancelRequestButton = document.querySelector( '#cancel' )
@@ -334,7 +503,7 @@ cancelRequestButton.addEventListener( 'click', e vent=> {
 } )
 ```
 
-```typescript
+```ts
 ...
 
 eventSource.addEventListener( 'end', event => {
@@ -343,91 +512,21 @@ eventSource.addEventListener( 'end', event => {
 } )
 ```
 
-##### EventSource Error handling
+---
+
+#### EventSource Error handling
 
 By default, errors are handled by listening to the "error" event on the EventSource instance.\
 The server may use this event too to return handled errors occured on the server while running its tasks.
 
-```typescript
-eventSource.addEventListener("error", (event) => {
-  eventSource.close();
-  console.log('"error" event', eventSource.readyState, event);
-});
+```ts
+eventSource.addEventListener('error', event => {
+  eventSource.close()
+  console.log('"error" event', eventSource.readyState, event)
+})
 ```
 
 ---
-
-### Development
-
-#### Install dependencies
-
-```bash
-npm install
-```
-
-or using `pnpm`
-
-```bash
-pnpm i
-```
-
-#### Build the source code
-
-Run the following command to test and build code for distribution.
-
-```bash
-pnpm build
-```
-
-#### [ESLint](https://www.npmjs.com/package/eslint)
-
-Run warnings and errors checks.
-
-```bash
-pnpm lint
-```
-
-#### [Jest](https://npmjs.com/package/jest)
-
-Run all the defined test suites by running the following:
-
-```bash
-# Run tests and watch file changes.
-pnpm test:watch
-
-# Run tests in a CI environment.
-pnpm test:ci
-```
-
-- See [`package.json`](./package.json) file scripts for more info.
-
-Run tests with coverage.
-
-An HTTP server is then started to serve coverage files from `./coverage` folder.
-
-⚠️ You may see a blank page the first time you run this command. Simply refresh the browser to see the updates.
-
-```bash
-test:coverage:serve
-```
-
----
-
-### Contributing
-
-Contributions are truly welcome!
-
-Please refer to the [Contributing Doc](./CONTRIBUTING.md) for more information on how to start contributing to this project.
-
-Help keep this project up to date with [GitHub Sponsor][sponsor-url].
-
-[![GitHub Sponsor][sponsor-badge]][sponsor-url]
-
----
-
-### Security
-
-If you believe you have found a security vulnerability, we encourage you to **_responsibly disclose this and NOT open a public issue_**. We will investigate all legitimate reports. Email `security@alessiofrittoli.it` to disclose any security vulnerabilities.
 
 ### Made with ☕
 
