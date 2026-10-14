@@ -1,6 +1,6 @@
 {
 	"name": "@alessiofrittoli/server-sent-events",
-	"version": "2.4.0",
+	"version": "2.5.0",
 	"description": "Class Based implementation for Server-Sent events",
 	"type": "module",
 	"author": {
@@ -83,15 +83,11 @@
 		"test:serve-coverage": "http-server ./coverage --gzip true -p 0 -o /index.html --silent",
 		"test:coverage:serve": "concurrently --prefix none --kill-others \"pnpm test:coverage\" \"pnpm test:serve-coverage\""
 	},
-	"peerDependencies": {
-		"@alessiofrittoli/stream-writer": "^1.5.1"
-	},
 	"devDependencies": {
 		"@alessiofrittoli/exception": "^4.1.0",
 		"@alessiofrittoli/node-scripts": "^4.0.0",
 		"@alessiofrittoli/package-configs": "^1.6.0",
 		"@alessiofrittoli/stream-reader": "^3.1.0",
-		"@alessiofrittoli/stream-writer": "^1.5.1",
 		"@types/node": "^24.19.1",
 		"@vitest/coverage-v8": "^5.0.3",
 		"concurrently": "^9.2.1",
@@ -103,5 +99,8 @@
 		"typescript": "^6.0.3",
 		"vite": "^8.3.2",
 		"vitest": "^5.0.3"
+	},
+	"dependencies": {
+		"@alessiofrittoli/stream-writer": "^1.5.1"
 	}
 }

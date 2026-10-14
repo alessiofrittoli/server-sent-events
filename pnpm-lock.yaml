@@ -7,6 +7,10 @@ settings:
 importers:
 
   .:
+    dependencies:
+      '@alessiofrittoli/stream-writer':
+        specifier: ^1.5.1
+        version: 1.5.1(@alessiofrittoli/exception@4.1.0)
     devDependencies:
       '@alessiofrittoli/exception':
         specifier: ^4.1.0
@@ -20,9 +24,6 @@ importers:
       '@alessiofrittoli/stream-reader':
         specifier: ^3.1.0
         version: 3.1.0(@alessiofrittoli/event-emitter@1.6.0)(@alessiofrittoli/exception@4.1.0)(@alessiofrittoli/math-utils@1.18.0)
-      '@alessiofrittoli/stream-writer':
-        specifier: ^1.5.1
-        version: 1.5.1(@alessiofrittoli/exception@4.1.0)
       '@types/node':
         specifier: ^24.19.1
         version: 24.19.2
