@@ -6,8 +6,8 @@
   <a href="https://npmjs.org/package/@alessiofrittoli/server-sent-events">
     <img src="https://img.shields.io/npm/v/@alessiofrittoli/server-sent-events" alt="Latest version"/>
   </a>
-  <a href="https://coveralls.io/github/alessiofrittoli/exception">
-    <img src="https://coveralls.io/repos/github/alessiofrittoli/exception/badge.svg" alt="Test coverage"/>
+  <a href="https://coveralls.io/github/alessiofrittoli/server-sent-events">
+    <img src="https://coveralls.io/repos/github/alessiofrittoli/server-sent-events/badge.svg" alt="Test coverage"/>
   </a>
   <a href="https://socket.dev/npm/package/@alessiofrittoli/server-sent-events/overview">
     <img src="https://socket.dev/api/badge/npm/package/@alessiofrittoli/server-sent-events" alt="Socket Security score"/>
@@ -18,7 +18,7 @@
   <a href="https://bundlephobia.com/package/@alessiofrittoli/server-sent-events">
     <img src="https://badgen.net/bundlephobia/dependency-count/@alessiofrittoli/server-sent-events" alt="Dependencies"/>
   </a>
-  <a href="https://libraries.io/npm/%40alessiofrittoli%2Fexception">
+  <a href="https://libraries.io/npm/%40alessiofrittoli%2Fserver-sent-events">
     <img src="https://img.shields.io/librariesio/release/npm/@alessiofrittoli/server-sent-events" alt="Dependencies status"/>
   </a>
 </p>
