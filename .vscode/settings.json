@@ -1,23 +1,37 @@
 {
-  "workbench.colorCustomizations": {
-    "titleBar.activeBackground": "#00000000",
-    "titleBar.border": "#3763CB",
-    "titleBar.activeForeground": "#F0F0F0",
-    "statusBar.background": "#191919",
-    "statusBar.border": "#3763CB",
-    "statusBar.foreground": "#F0F0F0",
-    "activityBar.activeBorder": "#3763CB",
-    "activityBarBadge.foreground": "#F0F0F0",
-    "activityBarBadge.background": "#3763CB"
-  },
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnSave": true,
-  "files.associations": {
-    ".ignore": "ignore",
-    ".gitignore": "ignore"
-  },
-  "js/ts.tsdk.path": "node_modules/typescript/lib",
-  "json.schemaDownload.trustedDomains": {
-    "https://raw.githubusercontent.com/DavidAnson/markdownlint/": true
-  }
+	"workbench.colorCustomizations": {
+		// title bar
+		"titleBar.activeBackground": "#00000000",
+		"titleBar.border": "#3763CB",
+		"titleBar.activeForeground": "#F0F0F0",
+		// status bar
+		"statusBar.background": "#191919",
+		"statusBar.border": "#3763CB",
+		"statusBar.foreground": "#F0F0F0",
+		// activity bar
+		"activityBar.activeBorder": "#3763CB",
+		"activityBarBadge.foreground": "#F0F0F0",
+		"activityBarBadge.background": "#3763CB",
+		// tab
+		"tab.activeBorderTop": "#3763CB",
+		// buttons
+		"button.background": "#3763CB",
+		"button.foreground": "#F0F0F0",
+		"button.hoverBackground": "#567FDE",
+		"button.separator": "#F0F0F0",
+		// secondary buttons
+		"button.secondaryBackground": "#00000000",
+		"button.secondaryForeground": "#F0F0F0",
+		"button.secondaryHoverBackground": "#3763CB20"
+	},
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"editor.formatOnSave": true,
+	"files.associations": {
+		".ignore": "ignore",
+		".gitignore": "ignore"
+	},
+	"js/ts.tsdk.path": "node_modules/typescript/lib",
+	"json.schemaDownload.trustedDomains": {
+		"https://raw.githubusercontent.com/DavidAnson/markdownlint/": true
+	}
 }
