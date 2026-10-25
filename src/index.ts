@@ -89,15 +89,13 @@ export class ServerSentEvents extends Stream<string, Uint8Array> implements Serv
 
 		this.encoder = encoder
 		this.closed = false
-		this.retry = props?.retry
+		this.retry = props?.retry ? Math.max(1000, props.retry) : undefined
 		this.autoclose = props?.autoclose ?? true
-
-		const retryIsValid = !!this.retry
 
 		this.headers.set('Content-Type', 'text/event-stream')
 
-		if (retryIsValid) {
-			this.write(this.formatRetry(this.retry))
+		if (this.retry) {
+			this.write(this.formatRetry(this.retry)).catch(() => undefined)
 		}
 	}
 

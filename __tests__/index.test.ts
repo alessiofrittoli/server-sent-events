@@ -1,3 +1,4 @@
+// oxlint-disable typescript/no-floating-promises
 import { StreamReader, type TransformChunk } from '@alessiofrittoli/stream-reader'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { AbortError } from '@alessiofrittoli/exception/abort'
